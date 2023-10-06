@@ -1,0 +1,12 @@
+chaque philo doit etre un thread = pthread_create tn(philo).
+
+n fork = n philo
+
+each philo need 2 fork to eat
+
+need a mutex for each fork so philo wont steal fork
+
+philo are sit as n0 n1...nx
+
+if there is only 1 philo, only 1 fork at the middle
+
