@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/10/06 23:06:00 by arnduran         ###   ########.fr       */
+/*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
+/*   Updated: 2023/10/07 21:40:24 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include <pthread.h>
 
-int	main(int argc, char **argv)
+int	ft_error(int er)
 {
-	if (argc < 4 || argc > 6)
+	if (er == 1)
+	{
+		printf("Error Args\n");
 		return (0);
-	parsing(argc, argv);
+	}
 	return (0);
+}
+
+void	*routine()
+{
+	printf("Test from threads\n");
+	sleep(3);
+	printf("ending thread\n");
 }
