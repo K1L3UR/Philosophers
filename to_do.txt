@@ -8,7 +8,7 @@ need a mutex for each fork so philo wont steal fork
 
 philo are sit as n0 n1...nx
 
-if there is only 1 philo, only 1 fork at the middle
+if there is only 1 philo, only 1 fork at the middle (donc il meurs)
 
 faire des gaucher et droitiers / tu deplace la fourchette droite ou gauche avant l'autre
 faire un tableau et pas une lst

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/10/07 21:40:24 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:19:53 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	ft_error(int er)
 	return (0);
 }
 
-void	*routine()
-{
-	printf("Test from threads\n");
-	sleep(3);
-	printf("ending thread\n");
-}
+// void	*routine()
+// {
+// 	printf("Test from threads\n");
+// 	sleep(3);
+// 	printf("ending thread\n");
+// }

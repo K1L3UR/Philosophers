@@ -7,7 +7,7 @@ int	check_argv(int argc, char **argv)
 	
 	i = 1;
 	j = 0;
-	while (i < argc - 1)
+	while (i < argc)
 	{
 		while (argv[i][j] != '\0')
 		{
@@ -21,37 +21,65 @@ int	check_argv(int argc, char **argv)
 	return (0);
 }
 
-int	init(t_philos *ptr, int ac, char **argv)
+ 
+int	init(t_data *ptr, int ac, char **argv)
 {
 	int	i;
 	int	n_philo;
 
 	i = 0;
 	n_philo = ft_atoi(argv[1]);
-	ptr = ft_calloc(0, n_philo);
-	while (i < n_philo)
+	ptr = ft_calloc(1, sizeof(t_data));
+	ptr->nb_philo = ft_atoi(argv[1]);
+	ptr->time_to_die = ft_atoi(argv[2]);
+	ptr->time_to_eat = ft_atoi(argv[3]);
+	ptr->time_to_sleep = ft_atoi(argv[4]);
+	ptr->number_of_eat = ft_atoi(argv[5]); // je segfault si il existe pas
+	printf("%d \n %d \n %d \n %d \n %d \n", ptr->nb_philo, ptr->time_to_die, ptr->time_to_eat,
+		ptr->time_to_sleep, ptr->number_of_eat);
+	return (0);
+}
+
+void	*func1()
+{
+	int	i = 0;
+	t_philo	ptr;
+
+	// pthread_mutex_init(&ptr.l_fork, NULL);
+	// pthread_mutex_lock(&ptr.l_fork);
+	while (i < 100)
 	{
-		ptr[i].nb_philo = ft_atoi(argv[1]);
-		ptr[i].time_to_die = ft_atoi(argv[2]);
-		ptr[i].time_to_eat = ft_atoi(argv[3]);
-		ptr[i].time_to_sleep = ft_atoi(argv[4]);
-		ptr[i].number_of_eat = ft_atoi(argv[5]);
-		printf("%d \n %d \n %d \n %d \n %d \n", ptr[i].nb_philo, ptr[i].time_to_die, ptr[i].time_to_eat,
-			ptr[i].time_to_sleep, ptr[i].number_of_eat);
+		printf("%s\n", "Hello\n");
 		i++;
 	}
-	return (0);
+	// pthread_mutex_unlock(&ptr.l_fork);
+	// pthread_mutex_destroy(&ptr.l_fork);
+	return (NULL);
+}
+
+void	*func2()
+{
+	int	i = 0;
+	t_philo	*ptr;
+
+	while (i < 100)
+	{
+		printf("\t\t%s\n", "World\n");
+		i++;
+	}
+	pthread_exit(0);
 }
 
 int	parsing(int argc, char **argv)
 {
 	int				i;
 	int				ac;
-	t_philos		*ptr;
-	pthread_t		t1;
+	// t_philo		*ptr;
+	t_data		*ptr;
 	void			*ret;
-
-	
+	pthread_t		t1;
+	pthread_t		t2;
+	t_philo			acces;
 	// if (pthread_create(&t1,NULL, &routine, NULL) != 0)
 	// 	return (1);
 		// if  (pthread_join(t1, ret) != 0) // bloque en attendant qu'un autre thread se finisse
@@ -61,5 +89,12 @@ int	parsing(int argc, char **argv)
 	if (check_argv(argc, argv) == 1)
 		ft_error(1);
 	init(ptr, ac, argv);
+	printf("PARSING DONE\n");
+
+	pthread_create(&t1, NULL, func1, s_philo);
+	pthread_create(&t2, NULL, func2, NULL);
+	sleep(1);
+	pthread_join(t1, NULL);
+	pthread_join(t2, NULL);
 	return (0);
 }
