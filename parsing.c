@@ -40,12 +40,31 @@ t_data	init(t_data *ptr, int ac, char **argv)
 	return (*ptr);
 }
 
+// void	*func1(t_data *ptr) celle ci marche
+// {
+// 	int		i = 0;
+
+// 	// pthread_mutex_init(&ptr.l_fork, NULL);
+// 	// pthread_mutex_lock(&ptr.l_fork);
+// 	printf("FUNCTION 1 PTR->NB_EAT\n");
+// 	printf("%d\n", ptr->number_of_eat);
+// 	sleep(3);
+// 	while (i < 100)
+// 	{
+// 		printf("%s\n", "Hello\n");
+// 		i++;
+// 	}
+// 	// pthread_mutex_unlock(&ptr.l_fork);
+// 	// pthread_mutex_destroy(&ptr.l_fork);
+// 	return (NULL);
+// }
+
 void	*func1(t_data *ptr)
 {
 	int		i = 0;
 
-	// pthread_mutex_init(&ptr.l_fork, NULL);
-	// pthread_mutex_lock(&ptr.l_fork);
+	pthread_mutex_init(ptr->forks, NULL);
+	pthread_mutex_lock(ptr->forks);
 	printf("FUNCTION 1 PTR->NB_EAT\n");
 	printf("%d\n", ptr->number_of_eat);
 	sleep(3);
@@ -54,8 +73,8 @@ void	*func1(t_data *ptr)
 		printf("%s\n", "Hello\n");
 		i++;
 	}
-	// pthread_mutex_unlock(&ptr.l_fork);
-	// pthread_mutex_destroy(&ptr.l_fork);
+	pthread_mutex_unlock(ptr->forks);
+	pthread_mutex_destroy(ptr->forks);
 	return (NULL);
 }
 
