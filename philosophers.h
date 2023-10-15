@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/10/13 23:18:53 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:52:23 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdlib.h>
 # include <time.h>
 # include "libft/libft.h"
+# include <sys/time.h>
+
 
 typedef	struct	s_data
 {
@@ -43,5 +45,6 @@ int		check_argv(int argc, char **argv);
 t_data		init(t_data	*ptr, int ac, char **argv);
 void	*routine();
 int		ft_error(int er);
+void	test();
 
 # endif
