@@ -63,8 +63,8 @@ void	*func1(t_data *ptr)
 {
 	int		i = 0;
 
-	pthread_mutex_init(ptr->forks, NULL);
-	pthread_mutex_lock(ptr->forks);
+	//pthread_mutex_init(ptr->forks, NULL);
+	//pthread_mutex_lock(ptr->forks);
 	printf("FUNCTION 1 PTR->NB_EAT\n");
 	printf("%d\n", ptr->number_of_eat);
 	sleep(3);
@@ -73,8 +73,8 @@ void	*func1(t_data *ptr)
 		printf("%s\n", "Hello\n");
 		i++;
 	}
-	pthread_mutex_unlock(ptr->forks);
-	pthread_mutex_destroy(ptr->forks);
+	//pthread_mutex_unlock(ptr->forks);
+	//pthread_mutex_destroy(ptr->forks);
 	return (NULL);
 }
 
