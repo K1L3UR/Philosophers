@@ -114,6 +114,6 @@ int	parsing(int argc, char **argv)
 	pthread_create(&t2, NULL, func2, NULL);
 	pthread_join(t1, NULL);
 	pthread_join(t2, NULL);
-	test();
+	test(*ret);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/10/15 20:52:23 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/10/17 20:52:26 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <time.h>
 # include "libft/libft.h"
 # include <sys/time.h>
+# include <stdint.h>
 
 
 typedef	struct	s_data
@@ -30,6 +31,7 @@ typedef	struct	s_data
 	int				time_to_sleep;
 	int				number_of_eat;
 	pthread_mutex_t	*forks; // ca segfault
+	uint64_t		starting_time;
 }				t_data;
 
 typedef	struct	s_philo
