@@ -103,17 +103,19 @@ int	parsing(int argc, char **argv)
 	// 	return (1);
 		// if  (pthread_join(t1, ret) != 0) // bloque en attendant qu'un autre thread se finisse
 		// 	ft_error(1);
+	ret->starting_time = get_time();
+	printf("%lu\n", ret->starting_time);
+	sleep(1);
 	i = 1;
 	ac = argc - 1;
 	if (check_argv(argc, argv) == 1)
 		ft_error(1);
 	*ret = init(ptr, ac, argv);
 	printf("PARSING DONE\n");
-
 	pthread_create(&t1, NULL, (void*)func1, (void*)ret);
 	pthread_create(&t2, NULL, func2, NULL);
 	pthread_join(t1, NULL);
 	pthread_join(t2, NULL);
-	test(*ret);
+	test(&ret);
 	return (0);
 }

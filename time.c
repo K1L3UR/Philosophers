@@ -8,7 +8,7 @@
 // };
 
 
-int	get_time(t_data *ret)
+uint64_t	get_time()
 {
 	uint64_t		curr_time;
 	struct timeval	tv;
@@ -18,15 +18,18 @@ int	get_time(t_data *ret)
 	return ((tv.tv_sec * 1000LL + tv.tv_usec / 1000));
 }
 
-void	test(t_data ret)
+void	test(t_data **ret)
 {
-	struct	timeval	time;
+	struct		timeval	time;
+	uint64_t	time_begin;
 
 	if (gettimeofday(&time, NULL) != 0)
         return ;
 	printf("%ld second\n", time.tv_sec);
 	printf("%ld microseconds\n", time.tv_usec);
-
 	printf("%ld years passed since 1970\n", time.tv_sec / 60 / 60 / 24 / 365);
-	get_time();
+	time_begin = get_time();
+	printf("%lu\n", time_begin);
+	printf("%lu\n", (*ret)->starting_time);
+	//printf("%lu millisecond passed since beginning\n", time_begin - ret.starting_time);
 }

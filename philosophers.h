@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/10/17 20:52:26 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/10/17 23:39:44 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ typedef	struct	s_philo
 }				t_philo;
 
 
-int		parsing(int argc, char **argv);
-int		check_argv(int argc, char **argv);
+int			parsing(int argc, char **argv);
+int			check_argv(int argc, char **argv);
 t_data		init(t_data	*ptr, int ac, char **argv);
-void	*routine();
-int		ft_error(int er);
-void	test();
+void		*routine();
+int			ft_error(int er);
+void		test(t_data **ret);
+uint64_t	get_time();
 
 # endif
