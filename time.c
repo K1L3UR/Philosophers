@@ -21,15 +21,18 @@ uint64_t	get_time()
 void	test(t_data **ret)
 {
 	struct		timeval	time;
-	uint64_t	time_begin;
+	uint64_t	curr_time;
+	uint64_t    res = 0;
 
 	if (gettimeofday(&time, NULL) != 0)
         return ;
 	printf("%ld second\n", time.tv_sec);
 	printf("%ld microseconds\n", time.tv_usec);
-	printf("%ld years passed since 1970\n", time.tv_sec / 60 / 60 / 24 / 365);
-	time_begin = get_time();
-	printf("%lu\n", time_begin);
+	printf("%lu years passed since 1970\n", time.tv_sec / 60 / 60 / 24 / 365);
+	curr_time = get_time();
+	sleep(6);
+	printf("%lu\n", curr_time);
 	printf("%lu\n", (*ret)->starting_time);
-	//printf("%lu millisecond passed since beginning\n", time_begin - ret.starting_time);
+	res = curr_time - (*ret)->starting_time;
+	printf("%lu millisecond passed since beginning\n", res);
 }

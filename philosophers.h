@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/10/17 23:39:44 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:57:23 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef	struct	s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_eat;
-	pthread_mutex_t	*forks; // ca segfault
+	// pthread_mutex_t	*forks; // ca segfault
 	uint64_t		starting_time;
 }				t_data;
 
@@ -44,7 +44,7 @@ typedef	struct	s_philo
 
 int			parsing(int argc, char **argv);
 int			check_argv(int argc, char **argv);
-t_data		init(t_data	*ptr, int ac, char **argv);
+t_data		*init(t_data	*ptr, int ac, char **argv);
 void		*routine();
 int			ft_error(int er);
 void		test(t_data **ret);

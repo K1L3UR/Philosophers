@@ -22,7 +22,7 @@ int	check_argv(int argc, char **argv)
 }
 
  
-t_data	init(t_data *ptr, int ac, char **argv)
+t_data	*init(t_data *ptr, int ac, char **argv)
 {
 	int	i;
 	int	n_philo;
@@ -37,7 +37,7 @@ t_data	init(t_data *ptr, int ac, char **argv)
 	ptr->number_of_eat = ft_atoi(argv[5]); // je segfault si il existe pas
 	printf("%d \n %d \n %d \n %d \n %d \n", ptr->nb_philo, ptr->time_to_die, ptr->time_to_eat,
 		ptr->time_to_sleep, ptr->number_of_eat);
-	return (*ptr);
+	return (ptr);
 }
 
 // void	*func1(t_data *ptr) celle ci marche
@@ -102,15 +102,17 @@ int	parsing(int argc, char **argv)
 	// if (pthread_create(&t1,NULL, &routine, NULL) != 0)
 	// 	return (1);
 		// if  (pthread_join(t1, ret) != 0) // bloque en attendant qu'un autre thread se finisse
-		// 	ft_error(1);
-	ret->starting_time = get_time();
-	printf("%lu\n", ret->starting_time);
-	sleep(1);
+	// 	// 	ft_error(1);
+	// ret->starting_time = get_time();
+	// printf("%lu\n", ret->starting_time);
 	i = 1;
 	ac = argc - 1;
 	if (check_argv(argc, argv) == 1)
 		ft_error(1);
-	*ret = init(ptr, ac, argv);
+	ret = init(ptr, ac, argv);
+	ret->starting_time = get_time();
+	printf("%lu\n", ret->starting_time);
+	// sleep(3);
 	printf("PARSING DONE\n");
 	pthread_create(&t1, NULL, (void*)func1, (void*)ret);
 	pthread_create(&t2, NULL, func2, NULL);
