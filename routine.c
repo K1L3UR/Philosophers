@@ -22,9 +22,7 @@ int	ft_error(int er)
 	return (0);
 }
 
-// void	*routine()
-// {
-// 	printf("Test from threads\n");
-// 	sleep(3);
-// 	printf("ending thread\n");
-// }
+void	*routine(t_philo *ptr_ph)
+{
+	faire manger thinking dodo ?
+}

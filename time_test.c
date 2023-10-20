@@ -67,6 +67,8 @@ void    example2()
     start_time = get_time();
     // sleep(2);
     usleep(2000);
+    usleep(2000);
+    usleep(2000);
     curr_time = get_time();
     res = curr_time - start_time;
     printf("%ld milliseconds passed since the start\n", res);

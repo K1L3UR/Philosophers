@@ -12,7 +12,7 @@ typedef	struct s_locks
 	pthread_mutex_t	lock_1;
 	pthread_mutex_t	lock_2;
 	unsigned int	count;
-}	t_locks;
+}				t_locks;
 
 // The first thread invokes this routine:
 void	*thread_1_routine(void *data)

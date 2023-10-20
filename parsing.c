@@ -34,7 +34,9 @@ t_data	*init(t_data *ptr, int ac, char **argv)
 	ptr->time_to_die = ft_atoi(argv[2]);
 	ptr->time_to_eat = ft_atoi(argv[3]);
 	ptr->time_to_sleep = ft_atoi(argv[4]);
-	ptr->number_of_eat = ft_atoi(argv[5]); // je segfault si il existe pas
+	ptr->number_of_eat = -1;
+	if (ac == 5)
+		ptr->number_of_eat = ft_atoi(argv[5]);
 	printf("%d \n %d \n %d \n %d \n %d \n", ptr->nb_philo, ptr->time_to_die, ptr->time_to_eat,
 		ptr->time_to_sleep, ptr->number_of_eat);
 	return (ptr);
@@ -67,7 +69,6 @@ void	*func1(t_data *ptr)
 	//pthread_mutex_lock(ptr->forks);
 	printf("FUNCTION 1 PTR->NB_EAT\n");
 	printf("%d\n", ptr->number_of_eat);
-	sleep(3);
 	while (i < 100)
 	{
 		printf("%s\n", "Hello\n");
@@ -91,20 +92,30 @@ void	*func2()
 	pthread_exit(0);
 }
 
+void	*create_thread(t_philo *ptr_ph)
+{
+	int	i;
+
+	i = 0;
+	printf("NB PHILO\n%d\n", ptr_ph->data->nb_philo);
+	while (i > ptr_ph->data->nb_philo)
+	{
+		pthread_create(&ptr_ph[i], NULL, routine, (void*)ptr_ph);
+		ptr_ph->id;
+		i++;
+	}
+}
+
 int	parsing(int argc, char **argv)
 {
 	int				i;
 	int				ac;
 	t_data			*ptr;
 	t_data			*ret;
+	t_philo			*ptr_ph;
 	pthread_t		t1;
 	pthread_t		t2;
-	// if (pthread_create(&t1,NULL, &routine, NULL) != 0)
-	// 	return (1);
-		// if  (pthread_join(t1, ret) != 0) // bloque en attendant qu'un autre thread se finisse
-	// 	// 	ft_error(1);
-	// ret->starting_time = get_time();
-	// printf("%lu\n", ret->starting_time);
+	pthread_t		rout;
 	i = 1;
 	ac = argc - 1;
 	if (check_argv(argc, argv) == 1)
@@ -112,12 +123,14 @@ int	parsing(int argc, char **argv)
 	ret = init(ptr, ac, argv);
 	ret->starting_time = get_time();
 	printf("%lu\n", ret->starting_time);
-	// sleep(3);
 	printf("PARSING DONE\n");
 	pthread_create(&t1, NULL, (void*)func1, (void*)ret);
 	pthread_create(&t2, NULL, func2, NULL);
 	pthread_join(t1, NULL);
 	pthread_join(t2, NULL);
 	test(&ret);
+	ptr_ph->data = ret;
+	pthread_create(&rout, NULL, (void*)create_thread, (void*)ptr_ph);
+	pthread_join(create_thread, NULL);	
 	return (0);
 }

@@ -30,9 +30,8 @@ void	test(t_data **ret)
 	printf("%ld microseconds\n", time.tv_usec);
 	printf("%lu years passed since 1970\n", time.tv_sec / 60 / 60 / 24 / 365);
 	curr_time = get_time();
-	sleep(6);
-	printf("%lu\n", curr_time);
-	printf("%lu\n", (*ret)->starting_time);
+	// printf("%lu\n", curr_time);
+	// printf("%lu\n", (*ret)->starting_time);
 	res = curr_time - (*ret)->starting_time;
-	printf("%lu millisecond passed since beginning\n", res);
+	printf("%lu millisecond passed since beginning\n", res); // le temps obtenus n'est pas juste
 }
