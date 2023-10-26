@@ -98,10 +98,12 @@ void	*create_thread(t_philo *ptr_ph)
 
 	i = 0;
 	printf("NB PHILO\n%d\n", ptr_ph->data->nb_philo);
-	while (i > ptr_ph->data->nb_philo)
+	while (i < ptr_ph->data->nb_philo)
 	{
-		pthread_create(&ptr_ph[i], NULL, routine, (void*)ptr_ph);
-		ptr_ph->id;
+	printf("je passe ici\n");
+		pthread_create(&ptr_ph[i], NULL, routine, (void*)&ptr_ph[i]); // faut print dans la routine mais ca devrais etre bon
+		ptr_ph[i].id = i + 1;
+		printf("%d\n", ptr_ph->id);
 		i++;
 	}
 }
@@ -131,6 +133,6 @@ int	parsing(int argc, char **argv)
 	test(&ret);
 	ptr_ph->data = ret;
 	pthread_create(&rout, NULL, (void*)create_thread, (void*)ptr_ph);
-	pthread_join(create_thread, NULL);	
+	pthread_join(rout, NULL);	
 	return (0);
 }

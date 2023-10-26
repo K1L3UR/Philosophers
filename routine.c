@@ -24,5 +24,5 @@ int	ft_error(int er)
 
 void	*routine(t_philo *ptr_ph)
 {
-	faire manger thinking dodo ?
+	//faire manger thinking dodo ?
 }
