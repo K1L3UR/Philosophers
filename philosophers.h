@@ -30,8 +30,8 @@ typedef	struct	s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_eat;
-	// pthread_mutex_t	*forks; // ca segfault
 	uint64_t		starting_time;
+	// pthread_mutex_t	*forks; // ca segfault
 }				t_data;
 
 typedef	struct	s_philo
@@ -39,15 +39,19 @@ typedef	struct	s_philo
 	t_data			*data;
 	int				number_of_eat; // optional
 	int				id;
+	pthread_t		thread_id;
+
 }				t_philo;
 
 
 int			parsing(int argc, char **argv);
 int			check_argv(int argc, char **argv);
-t_data		*init(t_data	*ptr, int ac, char **argv);
-void		*routine();
+t_data		*init(t_data **ptr, int ac, char **argv);
+void		*routine(t_philo *ptr_ph);
 int			ft_error(int er);
 void		test(t_data **ret);
 uint64_t	get_time();
+void		*create_thread(t_philo *ptr_ph);
+int			exec(t_philo *ptr_ph);
 
 # endif
