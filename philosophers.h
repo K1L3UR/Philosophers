@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/10/19 19:57:23 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/01 18:19:27 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ typedef	struct	s_philo
 	t_data			*data;
 	int				number_of_eat; // optional
 	int				id;
+	int				is_full;
+	// pthread_mutex_t	forks[2]; // ca segfault
+	pthread_mutex_t	r_fork; // ca segfault
+	pthread_mutex_t	l_fork; // ca segfault
 	pthread_t		thread_id;
 
 }				t_philo;
@@ -52,6 +56,7 @@ int			ft_error(int er);
 void		test(t_data **ret);
 uint64_t	get_time();
 void		*create_thread(t_philo *ptr_ph);
-int			exec(t_philo *ptr_ph);
+//int			exec(t_philo *ptr_ph);
+void		init_mutex(t_philo *ptr_ph);
 
 # endif

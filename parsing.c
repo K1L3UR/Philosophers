@@ -34,35 +34,18 @@ t_data	*init(t_data **ptr, int ac, char **argv)
 	(*ptr)->time_to_die = ft_atoi(argv[2]);
 	(*ptr)->time_to_eat = ft_atoi(argv[3]);
 	(*ptr)->time_to_sleep = ft_atoi(argv[4]);
-	(*ptr)->number_of_eat = -1;
 	if (ac == 5)
 		(*ptr)->number_of_eat = ft_atoi(argv[5]);
+	else
+		(*ptr)->number_of_eat = -1;
 	printf("%d \n %d \n %d \n %d \n %d \n", (*ptr)->nb_philo, (*ptr)->time_to_die, (*ptr)->time_to_eat,
 		(*ptr)->time_to_sleep, (*ptr)->number_of_eat);
-	(*ptr)->starting_time = 0;	
 	(*ptr)->starting_time = get_time();	
-	printf("allouer\n");
+	printf("init finit\n");
+	printf("%p\n", *ptr);
+	printf("---------\n");
 	return (*ptr);
 }
-
-// void	*func1(t_data *ptr) celle ci marche
-// {
-// 	int		i = 0;
-
-// 	// pthread_mutex_init(&ptr.l_fork, NULL);
-// 	// pthread_mutex_lock(&ptr.l_fork);
-// 	printf("FUNCTION 1 PTR->NB_EAT\n");
-// 	printf("%d\n", ptr->number_of_eat);
-// 	sleep(3);
-// 	while (i < 100)
-// 	{
-// 		printf("%s\n", "Hello\n");
-// 		i++;
-// 	}
-// 	// pthread_mutex_unlock(&ptr.l_fork);
-// 	// pthread_mutex_destroy(&ptr.l_fork);
-// 	return (NULL);
-// }
 
 void	*func1(t_data *ptr)
 {
@@ -71,7 +54,7 @@ void	*func1(t_data *ptr)
 	//pthread_mutex_init(ptr->forks, NULL);
 	//pthread_mutex_lock(ptr->forks);
 	printf("FUNCTION 1 PTR->NB_EAT\n");
-	printf("%d\n", ptr->number_of_eat); // bon
+	printf("%d\n", ptr->number_of_eat); // bon // pas bon sur linux/dell
 	while (i < 100)
 	{
 		printf("%s\n", "Hello\n");
@@ -102,11 +85,11 @@ void	*create_thread(t_philo *ptr_ph)
 	i = 0;
 	// printf("%d\n", ptr_ph->data->nb_philo);
 	printf("create thread des philos\n");
-	while (i <= ptr_ph->data->nb_philo)
+	while (i < ptr_ph->data->nb_philo)
 	{
-		pthread_create(&ptr_ph[i].thread_id, NULL, routine, (void*)&ptr_ph[i]); // je segfault si je le use
+		pthread_create(&ptr_ph[i].thread_id, NULL, routine, (void*)&ptr_ph[i]);
 		ptr_ph[i].id = i + 1;
-		printf("%d\n", ptr_ph[i].id);
+		usleep(1000); // obliger de wait sinon l'id s'incremente pas
 		i++;
 	}
 	pthread_exit(0);
@@ -125,24 +108,37 @@ int	parsing(int argc, char **argv)
 	
 	i = 1;
 	ac = argc - 1;
+	*ret = NULL;
 	if (check_argv(argc, argv) == 1)
 		ft_error(1);
+	printf("%p\n", *ret);
+	printf("--------\n");
 	*ret = init(&ptr, ac, argv);
-	(*ret)->starting_time = get_time();
-	printf("%llu\n", (*ret)->starting_time);
-	printf("PARSING DONE\n");
-	pthread_create(&t1, NULL, (void*)func1, (void*)ret);
-	pthread_create(&t2, NULL, func2, NULL);
-	pthread_join(t1, NULL);
-	pthread_join(t2, NULL);
-	test(ret);
-	printf("nb Philo: %d\n", (*ret)->nb_philo);
+	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * 1);
+	printf("%p\n", *ret);
 	ptr_ph->data = *ret;
-	// exec(ptr_ph);
-	// ptr_ph = (t_philo *)malloc(sizeof(t_philo) * (*ret)->nb_philo);
+	printf("%d \n %d \n %d \n %d \n %d \n %lu \n", ptr_ph->data->nb_philo, ptr_ph->data->time_to_die, ptr_ph->data->time_to_eat,
+			ptr_ph->data->time_to_sleep, ptr_ph->data->number_of_eat, ptr_ph->data->starting_time);
+	printf("--------\n");
+	printf("%p\n", ptr_ph->data);
+	printf("beep, beep\n");
+	sleep(2);
+	(*ret)->starting_time = get_time();
+	// printf("%lu\n", (*ret)->starting_time);
+	printf("PARSING DONE\n");
+	// pthread_create(&t1, NULL, (void*)func1, (void*)*ret);
+	// pthread_create(&t2, NULL, func2, NULL);
+	// pthread_join(t1, NULL);
+	// pthread_join(t2, NULL);
+	// test(ret);
+	exit(0);
+	printf("nb Philo: %d\n", (*ret)->nb_philo);
+	// ptr_ph = (t_philo *)malloc(sizeof(t_philo) * 1);
+	// ptr_ph->data = *ret;
+	init_mutex(ptr_ph);
+	create_thread(ptr_ph);
+	printf("blablabala\n");
 	printf("ptr :  %d\n", ptr_ph->data->nb_philo); // il segfault
-	pthread_create(&rout, NULL, (void*)create_thread, (void*)ptr_ph);
-	sleep(1);
 	while (i < (*ret)->nb_philo)
 	{
 		pthread_join(ptr_ph->thread_id, NULL);	
