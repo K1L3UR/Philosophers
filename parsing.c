@@ -118,6 +118,8 @@ int	parsing(int argc, char **argv)
 			ptr_ph->data->time_to_sleep, ptr_ph->data->number_of_eat, ptr_ph->data->starting_time);
 	printf("--------\n");
 	(*ret)->starting_time = get_time();
+	usleep(10000);
+	find_time(ret);
 	// printf("%lu\n", (*ret)->starting_time);
 	printf("PARSING DONE\n");
 	//// pthread_create(&t1, NULL, (void*)func1, (void*)*ret);

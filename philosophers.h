@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/02 19:02:00 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/02 20:00:46 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int			ft_error(int er);
 void		test(t_data **ret);
 uint64_t	get_time();
 void		*create_thread(t_philo *ptr_ph);
-//int			exec(t_philo *ptr_ph);
 void		init_mutex(t_philo *ptr_ph);
+void		find_time(t_data **ret);
 
 # endif

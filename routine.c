@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/02 19:26:52 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/02 19:33:33 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ int	ft_error(int er)
 // 	return (0);
 // }
 
+void	print_action(t_philo *ptr_ph)
+{
+	printf("%d\n", ptr_ph->id);
+}
+
 void	init_mutex(t_philo *ptr_ph)
 {
 	int	i;
@@ -59,6 +64,7 @@ void	eating(t_philo *ptr_ph)
 	int	i;
 
 	i = 0;
+	print_action(ptr_ph);
 	while (i < 100)
 	{	
 		usleep(100);
