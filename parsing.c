@@ -83,7 +83,6 @@ void	*create_thread(t_philo *ptr_ph)
 	int	i;
 
 	i = 0;
-	// printf("%d\n", ptr_ph->data->nb_philo);
 	printf("create thread des philos\n");
 	while (i < ptr_ph->data->nb_philo)
 	{
@@ -108,36 +107,35 @@ int	parsing(int argc, char **argv)
 	
 	i = 1;
 	ac = argc - 1;
+	ret = (t_data **)malloc(sizeof(t_data *)); 
 	*ret = NULL;
 	if (check_argv(argc, argv) == 1)
 		ft_error(1);
-	printf("%p\n", *ret);
-	printf("--------\n");
 	*ret = init(&ptr, ac, argv);
-	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * 1);
-	printf("%p\n", *ret);
+	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * (*ret)->nb_philo);
 	ptr_ph->data = *ret;
 	printf("%d \n %d \n %d \n %d \n %d \n %lu \n", ptr_ph->data->nb_philo, ptr_ph->data->time_to_die, ptr_ph->data->time_to_eat,
 			ptr_ph->data->time_to_sleep, ptr_ph->data->number_of_eat, ptr_ph->data->starting_time);
 	printf("--------\n");
-	printf("%p\n", ptr_ph->data);
-	printf("beep, beep\n");
-	sleep(2);
 	(*ret)->starting_time = get_time();
 	// printf("%lu\n", (*ret)->starting_time);
 	printf("PARSING DONE\n");
-	// pthread_create(&t1, NULL, (void*)func1, (void*)*ret);
-	// pthread_create(&t2, NULL, func2, NULL);
-	// pthread_join(t1, NULL);
-	// pthread_join(t2, NULL);
+	//// pthread_create(&t1, NULL, (void*)func1, (void*)*ret);
+	//// pthread_create(&t2, NULL, func2, NULL);
+	//// pthread_join(t1, NULL);
+	//// pthread_join(t2, NULL);
 	// test(ret);
-	exit(0);
 	printf("nb Philo: %d\n", (*ret)->nb_philo);
 	// ptr_ph = (t_philo *)malloc(sizeof(t_philo) * 1);
 	// ptr_ph->data = *ret;
+	// ptr_ph->l_fork = (pthread_mutex_t*)malloc((*ret)->nb_philo * sizeof(pthread_mutex_t));
+	// printf("%p\n", ptr_ph->l_fork);
+	// if (ptr_ph->l_fork == NULL);
+	// 	exit(0);
+	// if (ptr_ph->l_fork != NULL)
+	// 	printf("alloced\n");
 	init_mutex(ptr_ph);
 	create_thread(ptr_ph);
-	printf("blablabala\n");
 	printf("ptr :  %d\n", ptr_ph->data->nb_philo); // il segfault
 	while (i < (*ret)->nb_philo)
 	{

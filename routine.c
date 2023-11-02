@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/01 18:15:44 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/02 19:26:52 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ void	init_mutex(t_philo *ptr_ph)
 
 	i = 0;
 	printf("init mutex fork\n");
+	ptr_ph->l_fork = (pthread_mutex_t*)malloc(ptr_ph->data->nb_philo * sizeof(pthread_mutex_t));
 	while (i < ptr_ph->data->nb_philo)
 	{
-		pthread_mutex_init(&ptr_ph[i].l_fork, NULL);
-		pthread_mutex_init(&ptr_ph[i].r_fork, NULL);
+		pthread_mutex_init(&(ptr_ph[i].l_fork), NULL);
+		pthread_mutex_init(&(ptr_ph[i].r_fork), NULL);
 		// ptr_ph->is_full = 0;
 		i++;
 	}
@@ -72,11 +73,11 @@ void	*routine(t_philo *ptr_ph)
 {
 	t_philo *philosopher = (t_philo *)ptr_ph;
 	printf("Philosophe %d a commencé.\n", philosopher->id);
-	pthread_mutex_lock(&ptr_ph->l_fork);
-	pthread_mutex_lock(&ptr_ph->r_fork);
+	// pthread_mutex_lock(&ptr_ph->l_fork);
+	// pthread_mutex_lock(&ptr_ph->r_fork);
 	eating(ptr_ph);
-	pthread_mutex_unlock(&ptr_ph->l_fork);
-	pthread_mutex_unlock(&ptr_ph->r_fork);
+	// pthread_mutex_unlock(&ptr_ph->l_fork);
+	// pthread_mutex_unlock(&ptr_ph->r_fork);
 	printf("Philosophe %d a terminé.\n", philosopher->id);
 	return NULL;
 }
