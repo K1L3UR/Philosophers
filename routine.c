@@ -40,7 +40,10 @@ int	ft_error(int er)
 
 void	print_action(t_philo *ptr_ph)
 {
-	printf("%d\n", ptr_ph->id);
+	// find_time(ptr_ph); ca segfault, pk ?
+	printf("philo %d has taken a fork \n", ptr_ph->id);
+	printf("philo %d has taken a fork \n", ptr_ph->id);
+	printf("philo %d is eating \n", ptr_ph->id);
 }
 
 void	init_mutex(t_philo *ptr_ph)
@@ -72,18 +75,18 @@ void	eating(t_philo *ptr_ph)
 	}
 	// ptr_ph->is_full++;
 	// printf("%d\n", ptr_ph->is_full);
-	printf("philo %d a manger \n", ptr_ph->id);
+	// printf("philo %d a manger \n", ptr_ph->id);
 }
 
 void	*routine(t_philo *ptr_ph)
 {
 	t_philo *philosopher = (t_philo *)ptr_ph;
-	printf("Philosophe %d a commencé.\n", philosopher->id);
-	// pthread_mutex_lock(&ptr_ph->l_fork);
-	// pthread_mutex_lock(&ptr_ph->r_fork);
+	// printf("Philosophe %d a commencé.\n", philosopher->id);
+	pthread_mutex_lock(&ptr_ph->l_fork);
+	pthread_mutex_lock(&ptr_ph->r_fork);
 	eating(ptr_ph);
-	// pthread_mutex_unlock(&ptr_ph->l_fork);
-	// pthread_mutex_unlock(&ptr_ph->r_fork);
-	printf("Philosophe %d a terminé.\n", philosopher->id);
+	pthread_mutex_unlock(&ptr_ph->l_fork);
+	pthread_mutex_unlock(&ptr_ph->r_fork);
+	// printf("Philosophe %d a terminé.\n", philosopher->id);
 	return NULL;
 }

@@ -57,6 +57,6 @@ void		test(t_data **ret);
 uint64_t	get_time();
 void		*create_thread(t_philo *ptr_ph);
 void		init_mutex(t_philo *ptr_ph);
-void		find_time(t_data **ret);
+void		find_time(t_philo *ptr_ph);
 
 # endif

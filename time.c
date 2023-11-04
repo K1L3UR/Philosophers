@@ -18,12 +18,12 @@ uint64_t	get_time()
 	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
 }
 
-void	find_time(t_data **ret)
+void	find_time(t_philo *ptr_ph)
 {
 	uint64_t	now;
 
 	now = get_time();
-	printf("%d milliseconds passed since the start \n", now - (*ret)->starting_time);
+	printf("%d\n", now - ptr_ph->data->starting_time);
 }
 
 // void	test(t_data **ret)
