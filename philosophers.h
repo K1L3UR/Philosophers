@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/02 20:00:46 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/07 13:21:15 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef	struct	s_philo
 	int				id;
 	int				is_full;
 	// pthread_mutex_t	forks[2]; // ca segfault
-	pthread_mutex_t	r_fork;
-	pthread_mutex_t	*l_fork;
+	pthread_mutex_t	l_fork;
+	pthread_mutex_t	*r_fork;
 	pthread_t		thread_id;
 
 }				t_philo;

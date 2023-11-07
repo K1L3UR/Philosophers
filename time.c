@@ -23,7 +23,7 @@ void	find_time(t_philo *ptr_ph)
 	uint64_t	now;
 
 	now = get_time();
-	printf("%d\n", now - ptr_ph->data->starting_time);
+	printf("%lu\n", now - ptr_ph->data->starting_time);
 }
 
 // void	test(t_data **ret)

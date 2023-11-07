@@ -86,6 +86,8 @@ void	*create_thread(t_philo *ptr_ph)
 	printf("create thread des philos\n");
 	while (i < ptr_ph->data->nb_philo)
 	{
+		if (ptr_ph->id % 2 == 0)
+			usleep(2000);
 		pthread_create(&ptr_ph[i].thread_id, NULL, routine, (void*)&ptr_ph[i]);
 		ptr_ph[i].id = i + 1;
 		usleep(1000); // obliger de wait sinon l'id s'incremente pas
@@ -119,8 +121,7 @@ int	parsing(int argc, char **argv)
 	printf("--------\n");
 	(*ret)->starting_time = get_time();
 	usleep(10000);
-	find_time(ret);
-	// printf("%lu\n", (*ret)->starting_time);
+	find_time(ptr_ph);
 	printf("PARSING DONE\n");
 	//// pthread_create(&t1, NULL, (void*)func1, (void*)*ret);
 	//// pthread_create(&t2, NULL, func2, NULL);
