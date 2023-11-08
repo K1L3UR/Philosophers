@@ -18,28 +18,24 @@ uint64_t	get_time()
 	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
 }
 
-void	find_time(t_philo *ptr_ph)
+uint64_t	find_time(t_philo *ptr_ph)
 {
 	uint64_t	now;
 
 	now = get_time();
-	printf("%lu\n", now - ptr_ph->data->starting_time);
+	return (now - ptr_ph->data->starting_time);
 }
 
-// void	test(t_data **ret)
-// {
-// 	// struct		timeval	time;
-// 	uint64_t	curr_time;
-
-// 	// if (gettimeofday(&time, NULL) != 0)
-//     //     return ;
-// 	(*ret)->starting_time = get_time();
-// 	curr_time = get_time();
-// 	while (get_time() < (*ret)->starting_time + 2000)
-// 	{
-// 		usleep(100 * 1000);
-// 		curr_time = get_time();
-// 		printf("Time in ms = %ld. Time since start = %ld\n",
-// 						curr_time, curr_time - (*ret)->starting_time);
-// 	}
-// }
+void	ft_usleep(t_philo *ptr_ph, long	time)
+{
+	long	now;
+	
+	now = 0;
+	while (ptr_ph->data->alive == 1)
+	{
+		if (now >= (time * 1000))
+			break ;
+		usleep(200);
+		now += 200;
+	}
+}

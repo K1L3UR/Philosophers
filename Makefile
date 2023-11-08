@@ -1,5 +1,5 @@
 NAME = philo
-CFLAGS := -MMD -MP -g -pthread -lpthread #-Wall -Wextra -Werror -MMD -MP -g
+CFLAGS := -MMD -MP -g -pthread #-lpthread #-Wall -Wextra -Werror -MMD -MP -g
 LDFLAGS := -L libft -lft
 CC = clang
 SRC = main.c parsing.c routine.c time.c

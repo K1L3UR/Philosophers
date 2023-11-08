@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/07 21:33:58 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/08 18:55:42 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,6 @@ int	ft_error(int er)
 	return (0);
 }
 
-// int	exec(t_philo *ptr_ph)
-// {
-// 	int				i;
-// 	pthread_t		rout;
-
-// 	i = 0;
-// 	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * ptr_ph->data->nb_philo);
-// 	pthread_create(&rout, NULL, (void*)create_thread, (void*)ptr_ph);
-// 	while (i < ptr_ph->data->nb_philo)
-// 	{
-// 		pthread_join(&ptr_ph[i], NULL);	
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
 void	print_action(t_philo *ptr_ph)
 {
 	// find_time(ptr_ph); ca segfault, pk ?
@@ -46,56 +30,84 @@ void	print_action(t_philo *ptr_ph)
 	printf("philo %d is eating \n", ptr_ph->id);
 }
 
-void	init_mutex(t_philo *ptr_ph)
+void	init_mutex(t_philo *ptr_ph, t_data *info)
 {
 	int	i;
-
+	
 	i = 0;
-	printf("init mutex fork\n");
-	ptr_ph->r_fork = (pthread_mutex_t*)malloc(ptr_ph->data->nb_philo * sizeof(pthread_mutex_t));
-	while (i < ptr_ph->data->nb_philo)
+	pthread_mutex_init(&info->status, NULL);
+	while (i < info->nb_philo)
 	{
-		pthread_mutex_init(&(ptr_ph[i].l_fork), NULL);
-		pthread_mutex_init(&(ptr_ph[i].r_fork), NULL);
-		// printf("%d\n", &(ptr_ph[i].r_fork));
-		if (i == ptr_ph->data->nb_philo - 1)
-			ptr_ph[i].r_fork = &ptr_ph[0].l_fork;
-		else
-			ptr_ph[i].r_fork = &ptr_ph[i + 1].l_fork;
-		// ptr_ph->is_full = 0;
+		pthread_mutex_init(&info->forks[i], NULL);
 		i++;
 	}
+	return ;
+}
+
+void	write_status(t_philo *ptr_ph, int status)
+{
+	pthread_mutex_lock(&ptr_ph->data->status);
+	if (status == FORKING)
+		printf("%lu %d has taken a fork\n", find_time(ptr_ph), ptr_ph->id);
+	if (status == EATING)
+		printf("%lu %d is eating\n", find_time(ptr_ph), ptr_ph->id);
+	if (status == SLEEPING)
+		printf("%lu %d is sleeping\n", find_time(ptr_ph), ptr_ph->id);
+	if (status == THINKING)
+		printf("%lu %d is thinking\n", find_time(ptr_ph), ptr_ph->id);
+	pthread_mutex_unlock(&ptr_ph->data->status);
 }
 
 void	eating(t_philo *ptr_ph)
 {
-	int	i;
-
-	i = 0;
-	print_action(ptr_ph);
-	while (i < 100)
-	{	
-		usleep(100);
-		i++;
-	}
-	// ptr_ph->is_full++;
-	// printf("%d\n", ptr_ph->is_full);
-	// printf("philo %d a manger \n", ptr_ph->id);
+	if (ptr_ph->id % 2)
+		pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->l_fork]);
+	else
+		pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->r_fork]);
+	write_status(ptr_ph, FORKING);
+	if (ptr_ph->id % 2)
+		pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->r_fork]);
+	else
+		pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->l_fork]);
+	write_status(ptr_ph, FORKING);
+	write_status(ptr_ph, EATING);
+	usleep(ptr_ph->data->time_to_eat * 1000);
+	// ft_usleep(ptr_ph, ptr_ph->data->time_to_eat);
+	if (ptr_ph->id % 2)
+		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
+	else
+		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->r_fork]);
+	if (ptr_ph->id % 2)
+		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->r_fork]);
+	else
+		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
+	write_status(ptr_ph, SLEEPING);
+	usleep(ptr_ph->data->time_to_sleep * 1000);
+	// ft_usleep(ptr_ph, ptr_ph->data->time_to_sleep);
+	write_status(ptr_ph, THINKING);
 }
 
-void	*routine(t_philo *ptr_ph)
+void	*routine(void *arg)
 {
-	t_philo *philosopher = (t_philo *)ptr_ph;
+	t_philo	*ptr_ph;
+	
+	ptr_ph = (t_philo*)arg;
+	if (ptr_ph->id % 2)
+		usleep(2000);
+	while (ptr_ph->data->alive == 1)
+	{
+		eating(ptr_ph);
+	}
 	// printf("Philosophe %d a commencé.\n", philosopher->id);
-	printf("%d\n", ptr_ph->id);
-	printf("%p\n", &ptr_ph->l_fork);
-	pthread_mutex_lock(&ptr_ph->l_fork);
-	printf("%p\n", ptr_ph->r_fork);
-	pthread_mutex_lock(&ptr_ph->r_fork);
-	// eating(ptr_ph);
-	pthread_mutex_unlock(&ptr_ph->l_fork);
-	pthread_mutex_unlock(&ptr_ph->r_fork);
-	printf("apres mutex\n");
+	// printf("%d\n", ptr_ph->id);
+	// pthread_mutex_lock(&ptr_ph->data->l_fork);
+	// printf("%p\n", &ptr_ph->data->l_fork);
+	// pthread_mutex_lock(&ptr_ph->data->r_fork);
+	// printf("%p\n", ptr_ph->data->r_fork);
+	// // eating(ptr_ph);
+	// pthread_mutex_unlock(&ptr_ph->data->r_fork);
+	// pthread_mutex_unlock(&ptr_ph->data->l_fork);
+	// printf("apres mutex\n");
 	//dormir;
 	//penser;
 	// printf("Philosophe %d a terminé.\n", philosopher->id);
