@@ -35,7 +35,7 @@ void	philo_init(t_philo *ptr_ph, t_data *info)
 			ptr_ph[i].r_fork = 0;
 		else
 			ptr_ph[i].r_fork = i + 1;
-		ptr_ph[i].r_fork = i;
+		ptr_ph[i].l_fork = i;
 		i++;
 	}
 }
@@ -60,7 +60,6 @@ void	init(t_data *info, int ac, char **argv)
 	info->alive = 1;
 	info->forks = malloc(sizeof(pthread_mutex_t) * n_philo);
 	info->starting_time = get_time();	
-	printf("---------\n");
 }
 
 void	create_thread(t_philo *ptr_ph)
@@ -68,23 +67,20 @@ void	create_thread(t_philo *ptr_ph)
 	int	i;
 
 	i = 0;
-	printf("create thread des philos\n");
 	while (i < ptr_ph->data->nb_philo)
 	{
 		pthread_create(&ptr_ph[i].thread_id, NULL, routine, (void*)&ptr_ph[i]);
-		// usleep(1000); // obliger de wait sinon l'id s'incremente pas
+		ptr_ph[i].last_meal = get_time();
 		i++;
 	}
 }
 
-int	parsing(int argc, char **argv)
+int	parsing(int argc, char **argv, t_philo *ptr_ph)
 {
 	int				i;
 	int				ac;
 	t_data			ptr;
-	t_philo			*ptr_ph;
-	// pthread_t		t1;
-	// pthread_t		t2;
+	// t_philo			*ptr_ph;
 	pthread_t		rout;
 	
 	i = 1;
@@ -95,12 +91,7 @@ int	parsing(int argc, char **argv)
 	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * ptr.nb_philo);
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
-	//find_time(ptr_ph);
 	philo_init(ptr_ph, &ptr);
-	// ptr_ph = (t_philo *)malloc(sizeof(t_philo) * 1);
-	// ptr_ph->data = *ret;
-	// ptr_ph->l_fork = (pthread_mutex_t*)malloc((*ret)->nb_philo * sizeof(pthread_mutex_t));
-	// printf("%p\n", ptr_ph->l_fork);
 	init_mutex(ptr_ph, &ptr);
 	create_thread(ptr_ph);
 	while (i < ptr.nb_philo)

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/08 18:55:42 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:53:20 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,5 @@ void	*routine(void *arg)
 	{
 		eating(ptr_ph);
 	}
-	// printf("Philosophe %d a commencé.\n", philosopher->id);
-	// printf("%d\n", ptr_ph->id);
-	// pthread_mutex_lock(&ptr_ph->data->l_fork);
-	// printf("%p\n", &ptr_ph->data->l_fork);
-	// pthread_mutex_lock(&ptr_ph->data->r_fork);
-	// printf("%p\n", ptr_ph->data->r_fork);
-	// // eating(ptr_ph);
-	// pthread_mutex_unlock(&ptr_ph->data->r_fork);
-	// pthread_mutex_unlock(&ptr_ph->data->l_fork);
-	// printf("apres mutex\n");
-	//dormir;
-	//penser;
-	// printf("Philosophe %d a terminé.\n", philosopher->id);
 	return NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/08 18:47:43 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:07:32 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef	struct	s_philo
 {
 	t_data			*data;
 	int				number_of_eat; // optional
+	int				last_meal;
 	int				id;
 	int				r_fork;
 	int				l_fork;
@@ -52,7 +53,7 @@ typedef	struct	s_philo
 }				t_philo;
 
 
-int			parsing(int argc, char **argv);
+int			parsing(int argc, char **argv, t_philo *ptr_ph);
 int			check_argv(int argc, char **argv);
 void		init(t_data *info, int ac, char **argv);
 void		*routine(void *arg);
