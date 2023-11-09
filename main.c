@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/09 18:18:32 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:08:12 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char **argv)
 	if (argc <= 4 || argc > 6)
 		return (0);
 	parsing(argc, argv, ptr_ph);
-	while (check_dead != 0)
+	while (check_dead(ptr_ph) != 0)
 	{
 		
 	}
