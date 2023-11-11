@@ -45,7 +45,7 @@ void	init(t_data *info, int ac, char **argv)
 	int	i;
 	int	n_philo;
 
-	i = 0;
+	// i = 0;
 	n_philo = ft_atoi(argv[1]);
 	info->nb_philo = ft_atoi(argv[1]);
 	info->time_to_die = ft_atoi(argv[2]);
@@ -70,34 +70,33 @@ void	create_thread(t_philo *ptr_ph)
 	while (i < ptr_ph->data->nb_philo)
 	{
 		pthread_create(&ptr_ph[i].thread_id, NULL, routine, (void*)&ptr_ph[i]);
-		ptr_ph[i].last_meal = get_time();
+		ptr_ph[i].last_meal = 0;
 		i++;
 	}
 }
 
-int	parsing(int argc, char **argv, t_philo *ptr_ph)
+void	parsing(int argc, char **argv)
 {
 	int				i;
-	int				ac;
 	t_data			ptr;
-	// t_philo			*ptr_ph;
+	t_philo			*ptr_ph;	
 	pthread_t		rout;
 	
-	i = 1;
-	ac = argc - 1;
+	i = 0;
 	if (check_argv(argc, argv) == 1)
 		ft_error(1);
-	init(&ptr, ac, argv);
+	init(&ptr, (argc - 1), argv);
 	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * ptr.nb_philo);
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
 	philo_init(ptr_ph, &ptr);
 	init_mutex(ptr_ph, &ptr);
 	create_thread(ptr_ph);
-	while (i < ptr.nb_philo)
+	check_dead(ptr_ph);
+	usleep(2000);
+	while (i < ptr_ph->data->nb_philo)
 	{
 		pthread_join(ptr_ph->thread_id, NULL);	
 		i++;
 	}
-	return (0);
 }

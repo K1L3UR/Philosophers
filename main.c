@@ -6,37 +6,49 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/09 19:08:12 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:59:06 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <pthread.h>
 
-int	check_dead(t_philo *ptr_ph)
+void	check_dead(t_philo *ptr_ph)
 {
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(&ptr_ph->data->status);
-	while (get_time()- ptr_ph[i].last_meal < (ptr_ph->data->time_to_die * 1000))
+	while (check_alive(ptr_ph) == 1)
 	{
-		return (ptr_ph->id);
+		pthread_mutex_lock(&ptr_ph->data->meal);
+		if (get_time() - ptr_ph->data->starting_time - ptr_ph[i].last_meal > (ptr_ph->data->time_to_die))
+		{
+			pthread_mutex_lock(&ptr_ph->data->status);
+			ptr_ph->data->alive = 0;
+			pthread_mutex_unlock(&ptr_ph->data->status);
+			pthread_mutex_lock(&ptr_ph->data->writing);
+			printf("%lu %d is dead\n", find_time(ptr_ph), ptr_ph[i].id);
+			pthread_mutex_unlock(&ptr_ph->data->writing);
+			break ;
+		}
+		pthread_mutex_unlock(&ptr_ph->data->meal);
+		i++;
+		if (i == ptr_ph->data->nb_philo)
+		{
+			usleep(2000);
+			i = 0;
+		}
 	}
-	pthread_mutex_unlock(&ptr_ph->data->status);
-	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_philo	*ptr_ph;
+	// t_philo	*ptr_ph;
+	int		i;
 
+	i = 0;
 	if (argc <= 4 || argc > 6)
 		return (0);
-	parsing(argc, argv, ptr_ph);
-	while (check_dead(ptr_ph) != 0)
-	{
-		
-	}
+	parsing(argc, argv);
 	return (0);
 }

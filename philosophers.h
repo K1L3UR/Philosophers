@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/09 18:07:32 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:01:30 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define EATING 1
 # define SLEEPING 2
 # define THINKING 3
+# define DEADING 4
 
 typedef	struct	s_data
 {
@@ -37,7 +38,9 @@ typedef	struct	s_data
 	int				alive;
 	uint64_t		starting_time;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	writing;
 	pthread_mutex_t	status;
+	pthread_mutex_t	meal;
 }				t_data;
 
 typedef	struct	s_philo
@@ -53,7 +56,7 @@ typedef	struct	s_philo
 }				t_philo;
 
 
-int			parsing(int argc, char **argv, t_philo *ptr_ph);
+void		parsing(int argc, char **argv);
 int			check_argv(int argc, char **argv);
 void		init(t_data *info, int ac, char **argv);
 void		*routine(void *arg);
@@ -63,5 +66,8 @@ void		create_thread(t_philo *ptr_ph);
 void		init_mutex(t_philo *ptr_ph, t_data *info);
 uint64_t	find_time(t_philo *ptr_ph);
 void		ft_usleep(t_philo *ptr_ph, long	time);
+int			check_alive(t_philo *ptr_ph);
+void		write_status(t_philo *ptr_ph, int status);
+void		check_dead(t_philo *ptr_ph);
 
 # endif

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/09 19:07:14 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:50:58 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,8 @@ int	ft_error(int er)
 	if (er == 1)
 	{
 		printf("Error Args\n");
-		return (0);
 	}
 	return (0);
-}
-
-void	print_action(t_philo *ptr_ph)
-{
-	// find_time(ptr_ph); ca segfault, pk ?
-	printf("philo %d has taken a fork \n", ptr_ph->id);
-	printf("philo %d has taken a fork \n", ptr_ph->id);
-	printf("philo %d is eating \n", ptr_ph->id);
 }
 
 void	init_mutex(t_philo *ptr_ph, t_data *info)
@@ -36,6 +27,8 @@ void	init_mutex(t_philo *ptr_ph, t_data *info)
 	
 	i = 0;
 	pthread_mutex_init(&info->status, NULL);
+	pthread_mutex_init(&info->meal, NULL);
+	pthread_mutex_init(&info->writing, NULL);
 	while (i < info->nb_philo)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);
@@ -46,16 +39,19 @@ void	init_mutex(t_philo *ptr_ph, t_data *info)
 
 void	write_status(t_philo *ptr_ph, int status)
 {
-	pthread_mutex_lock(&ptr_ph->data->status);
-	if (status == FORKING)
-		printf("%lu %d has taken a fork\n", find_time(ptr_ph), ptr_ph->id);
-	if (status == EATING)
-		printf("%lu %d is eating\n", find_time(ptr_ph), ptr_ph->id);
-	if (status == SLEEPING)
-		printf("%lu %d is sleeping\n", find_time(ptr_ph), ptr_ph->id);
-	if (status == THINKING)
-		printf("%lu %d is thinking\n", find_time(ptr_ph), ptr_ph->id);
-	pthread_mutex_unlock(&ptr_ph->data->status);
+	if (check_alive(ptr_ph) == 1)
+	{
+		pthread_mutex_lock(&ptr_ph->data->writing);
+		if (status == FORKING)
+			printf("%lu %d has taken a fork\n", find_time(ptr_ph), ptr_ph->id);
+		if (status == EATING)
+			printf("%lu %d is eating\n", find_time(ptr_ph), ptr_ph->id);
+		if (status == SLEEPING)
+			printf("%lu %d is sleeping\n", find_time(ptr_ph), ptr_ph->id);
+		if (status == THINKING)
+			printf("%lu %d is thinking\n", find_time(ptr_ph), ptr_ph->id);
+		pthread_mutex_unlock(&ptr_ph->data->writing);
+	}
 }
 
 void	eating(t_philo *ptr_ph)
@@ -71,8 +67,9 @@ void	eating(t_philo *ptr_ph)
 		pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	write_status(ptr_ph, FORKING);
 	write_status(ptr_ph, EATING);
-	usleep(ptr_ph->data->time_to_eat * 1000);
-	// ft_usleep(ptr_ph, ptr_ph->data->time_to_eat);
+	ptr_ph->last_meal = find_time(ptr_ph);
+	// usleep(ptr_ph->data->time_to_eat * 1000);
+	ft_usleep(ptr_ph, ptr_ph->data->time_to_eat);
 	if (ptr_ph->id % 2)
 		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	else
@@ -82,9 +79,21 @@ void	eating(t_philo *ptr_ph)
 	else
 		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	write_status(ptr_ph, SLEEPING);
-	usleep(ptr_ph->data->time_to_sleep * 1000);
-	// ft_usleep(ptr_ph, ptr_ph->data->time_to_sleep);
+	// usleep(ptr_ph->data->time_to_sleep * 1000);
+	ft_usleep(ptr_ph, ptr_ph->data->time_to_sleep);
 	write_status(ptr_ph, THINKING);
+	usleep(1000);
+}
+
+int	check_alive(t_philo *ptr_ph)
+{
+	int	tmp;
+
+	tmp = 0;
+	pthread_mutex_lock(&ptr_ph->data->status);
+	tmp = ptr_ph->data->alive;
+	pthread_mutex_unlock(&ptr_ph->data->status);
+	return (tmp);
 }
 
 void	*routine(void *arg)
@@ -94,7 +103,7 @@ void	*routine(void *arg)
 	ptr_ph = (t_philo*)arg;
 	if (ptr_ph->id % 2)
 		usleep(2000);
-	while (ptr_ph->data->alive == 1)
+	while ((check_alive(ptr_ph)) == 1)
 	{
 		eating(ptr_ph);
 	}

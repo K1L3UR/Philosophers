@@ -28,14 +28,15 @@ uint64_t	find_time(t_philo *ptr_ph)
 
 void	ft_usleep(t_philo *ptr_ph, long	time)
 {
-	long	now;
-	
-	now = 0;
-	while (ptr_ph->data->alive == 1)
+	uint64_t	now;
+	uint64_t	start;
+
+	start = get_time();
+	while (check_alive(ptr_ph) == 1)
 	{
-		if (now >= (time * 1000))
+		now = get_time();
+		if (now - start >= time)
 			break ;
 		usleep(200);
-		now += 200;
 	}
 }
