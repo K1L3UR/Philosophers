@@ -1,14 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/13 14:25:49 by arnduran          #+#    #+#             */
+/*   Updated: 2023/11/13 14:26:25 by arnduran         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 #include <sys/time.h>
 
-// struct timeval
-// {
-// 	time_t			tv_sec;
-// 	__suseconds_t	tv_usec;
-// };
-
-
-uint64_t	get_time()
+uint64_t	get_time(void)
 {
 	uint64_t		curr_time;
 	struct timeval	tv;
@@ -26,7 +31,7 @@ uint64_t	find_time(t_philo *ptr_ph)
 	return (now - ptr_ph->data->starting_time);
 }
 
-void	ft_usleep(t_philo *ptr_ph, long	time)
+void	ft_usleep(t_philo *ptr_ph, long time)
 {
 	uint64_t	now;
 	uint64_t	start;

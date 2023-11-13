@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/11 18:59:06 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:16:38 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	check_dead(t_philo *ptr_ph)
 	while (check_alive(ptr_ph) == 1)
 	{
 		pthread_mutex_lock(&ptr_ph->data->meal);
-		if (get_time() - ptr_ph->data->starting_time - ptr_ph[i].last_meal > (ptr_ph->data->time_to_die))
+		if (get_time() - ptr_ph->data->starting_time - ptr_ph[i].last_meal
+			> (ptr_ph->data->time_to_die))
 		{
 			pthread_mutex_lock(&ptr_ph->data->status);
 			ptr_ph->data->alive = 0;
@@ -43,7 +44,6 @@ void	check_dead(t_philo *ptr_ph)
 
 int	main(int argc, char **argv)
 {
-	// t_philo	*ptr_ph;
 	int		i;
 
 	i = 0;

@@ -6,11 +6,13 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/11 18:50:58 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/13 14:37:15 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+#include <pthread.h>
+#include <stdio.h>
 
 int	ft_error(int er)
 {
@@ -24,7 +26,7 @@ int	ft_error(int er)
 void	init_mutex(t_philo *ptr_ph, t_data *info)
 {
 	int	i;
-	
+
 	i = 0;
 	pthread_mutex_init(&info->status, NULL);
 	pthread_mutex_init(&info->meal, NULL);
@@ -68,7 +70,6 @@ void	eating(t_philo *ptr_ph)
 	write_status(ptr_ph, FORKING);
 	write_status(ptr_ph, EATING);
 	ptr_ph->last_meal = find_time(ptr_ph);
-	// usleep(ptr_ph->data->time_to_eat * 1000);
 	ft_usleep(ptr_ph, ptr_ph->data->time_to_eat);
 	if (ptr_ph->id % 2)
 		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
@@ -79,7 +80,6 @@ void	eating(t_philo *ptr_ph)
 	else
 		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	write_status(ptr_ph, SLEEPING);
-	// usleep(ptr_ph->data->time_to_sleep * 1000);
 	ft_usleep(ptr_ph, ptr_ph->data->time_to_sleep);
 	write_status(ptr_ph, THINKING);
 	usleep(1000);
@@ -99,13 +99,13 @@ int	check_alive(t_philo *ptr_ph)
 void	*routine(void *arg)
 {
 	t_philo	*ptr_ph;
-	
-	ptr_ph = (t_philo*)arg;
+
+	ptr_ph = (t_philo *)arg;
 	if (ptr_ph->id % 2)
 		usleep(2000);
 	while ((check_alive(ptr_ph)) == 1)
 	{
 		eating(ptr_ph);
 	}
-	return NULL;
+	return (NULL);
 }

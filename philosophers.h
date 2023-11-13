@@ -6,18 +6,18 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/11 18:01:30 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:18:21 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#if	!defined(PHILOSOPHERS_H)
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 
 # include <stdio.h>
 # include <unistd.h>
 # include <pthread.h>
 # include <string.h>
 # include <stdlib.h>
-# include <time.h>
 # include "libft/libft.h"
 # include <sys/time.h>
 # include <stdint.h>
@@ -28,7 +28,7 @@
 # define THINKING 3
 # define DEADING 4
 
-typedef	struct	s_data
+typedef struct s_data
 {
 	int				nb_philo;
 	int				time_to_die;
@@ -43,10 +43,10 @@ typedef	struct	s_data
 	pthread_mutex_t	meal;
 }				t_data;
 
-typedef	struct	s_philo
+typedef struct s_philo
 {
 	t_data			*data;
-	int				number_of_eat; // optional
+	int				number_of_eat; // variable pour gere le nombre de repas a effectuer, je dois m'en occuper
 	int				last_meal;
 	int				id;
 	int				r_fork;
@@ -55,19 +55,18 @@ typedef	struct	s_philo
 
 }				t_philo;
 
-
 void		parsing(int argc, char **argv);
 int			check_argv(int argc, char **argv);
 void		init(t_data *info, int ac, char **argv);
 void		*routine(void *arg);
 int			ft_error(int er);
-uint64_t	get_time();
+uint64_t	get_time(void);
 void		create_thread(t_philo *ptr_ph);
 void		init_mutex(t_philo *ptr_ph, t_data *info);
 uint64_t	find_time(t_philo *ptr_ph);
-void		ft_usleep(t_philo *ptr_ph, long	time);
+void		ft_usleep(t_philo *ptr_ph, long time);
 int			check_alive(t_philo *ptr_ph);
 void		write_status(t_philo *ptr_ph, int status);
 void		check_dead(t_philo *ptr_ph);
 
-# endif
+#endif
