@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/13 14:37:15 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/14 17:45:39 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	eating(t_philo *ptr_ph)
 	write_status(ptr_ph, SLEEPING);
 	ft_usleep(ptr_ph, ptr_ph->data->time_to_sleep);
 	write_status(ptr_ph, THINKING);
-	usleep(1000);
+	usleep(1000); // obligatoire que si le pc est lent normalement
 }
 
 int	check_alive(t_philo *ptr_ph)
@@ -96,6 +96,21 @@ int	check_alive(t_philo *ptr_ph)
 	return (tmp);
 }
 
+int	is_full(t_philo *ptr_ph)
+{
+	int	i;
+
+	i = 0;
+	if (ptr_ph->data->number_of_eat == ptr_ph->number_of_eat)
+	{
+		exit(0);
+		//return (0);
+	}
+	ptr_ph->number_of_eat++;
+	i++;
+	return (1);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*ptr_ph;
@@ -103,7 +118,7 @@ void	*routine(void *arg)
 	ptr_ph = (t_philo *)arg;
 	if (ptr_ph->id % 2)
 		usleep(2000);
-	while ((check_alive(ptr_ph)) == 1)
+	while ((check_alive(ptr_ph)) == 1 && (is_full(ptr_ph)) == 1)
 	{
 		eating(ptr_ph);
 	}

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:26:49 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/13 18:16:48 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:09:45 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	init(t_data *info, int ac, char **argv)
 		info->number_of_eat = ft_atoi(argv[5]);
 	else
 		info->number_of_eat = -1;
+	info->meal_counter = 0;
 	info->alive = 1;
 	info->forks = malloc(sizeof(pthread_mutex_t) * n_philo);
 	info->starting_time = get_time();
@@ -101,6 +102,7 @@ void	parsing(int argc, char **argv)
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
 	philo_init(ptr_ph, &ptr);
+	// gerer ici le cas avec un seul philo
 	init_mutex(ptr_ph, &ptr);
 	create_thread(ptr_ph);
 	check_dead(ptr_ph);

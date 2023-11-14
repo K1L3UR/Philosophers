@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/13 18:18:21 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:06:26 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				number_of_eat;
 	int				alive;
+	int				meal_counter;
 	uint64_t		starting_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	writing;
 	pthread_mutex_t	status;
 	pthread_mutex_t	meal;
+	pthread_mutex_t	meal_counter_mutex;
 }				t_data;
 
 typedef struct s_philo

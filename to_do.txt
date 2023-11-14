@@ -14,4 +14,7 @@ faire des gaucher et droitiers / tu deplace la fourchette droite ou gauche avant
 faire un tableau et pas une lst
 tableau de philo et tableau de fourchettes
 
+----------------------------------------------------------------------------------------
 gerer le cas avec un seul philo
+
+gerer les temps a la con / trop court
