@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:26:49 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/14 18:09:45 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:45:04 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,10 @@ void	parsing(int argc, char **argv)
 	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * ptr.nb_philo);
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
+	if (ptr_ph->data->nb_philo == 1)
+		special_case(ptr_ph, &ptr);
+	// jai tj un probleme de maniere random de temps en temps
+	// si jamais je ne return pas ici donc il va falloir verifier et return
 	philo_init(ptr_ph, &ptr);
 	// gerer ici le cas avec un seul philo
 	init_mutex(ptr_ph, &ptr);

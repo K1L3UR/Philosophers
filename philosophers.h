@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/14 18:06:26 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:23:00 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ void		ft_usleep(t_philo *ptr_ph, long time);
 int			check_alive(t_philo *ptr_ph);
 void		write_status(t_philo *ptr_ph, int status);
 void		check_dead(t_philo *ptr_ph);
+int			special_case(t_philo *ptr_ph, t_data *info);
 
 #endif

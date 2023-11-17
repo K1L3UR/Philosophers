@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/13 18:16:38 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:43:42 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ void	check_dead(t_philo *ptr_ph)
 			i = 0;
 		}
 	}
+}
+
+int	special_case(t_philo *ptr_ph, t_data *info)
+{
+	ptr_ph->data = info;
+	ptr_ph->id = 1;
+	ptr_ph->number_of_eat = 0;
+	ptr_ph->r_fork = 0;
+	printf("%lu %d has taken a fork\n", find_time(ptr_ph), (ptr_ph->id));
+	// ft_usleep(ptr_ph, ptr_ph->data->time_to_die);
+	usleep(ptr_ph->data->time_to_die * 1000);
+	// printf("%lu %d is dead\n", find_time(ptr_ph), (ptr_ph->id));
+	return (0);
 }
 
 int	main(int argc, char **argv)
