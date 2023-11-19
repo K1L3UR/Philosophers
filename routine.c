@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/16 18:58:00 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/19 22:14:20 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,35 @@ void	init_mutex(t_philo *ptr_ph, t_data *info)
 	}
 	return ;
 }
+
+void destroy_mutex_1(t_data *info)
+{
+	int i;
+
+	i = 0;
+	while (i < info->nb_philo)
+	{
+		pthread_mutex_destroy(&(info->forks[i]));
+		i++;
+	}
+}
+
+void destroy_mutex(t_data *info)
+{
+	int i;
+
+	i = 0;
+	while (i < info->nb_philo)
+	{
+		pthread_mutex_destroy(&(info->forks[i]));
+		i++;
+	}
+	pthread_mutex_destroy(&(info->writing));
+	pthread_mutex_destroy(&(info->status));
+	pthread_mutex_destroy(&(info->meal));
+	pthread_mutex_destroy(&(info->meal_counter_mutex));
+}
+
 
 void	write_status(t_philo *ptr_ph, int status)
 {

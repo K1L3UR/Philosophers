@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:26:49 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/17 18:45:04 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/19 22:55:16 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,29 @@ void	create_thread(t_philo *ptr_ph)
 	}
 }
 
+void free_data(t_data *info)
+{
+	free(info);
+}
+
+void free_philo(t_philo *ptr_ph)
+{
+	int i;
+
+	i = 0;
+	while (i < ptr_ph->data->nb_philo)
+	{
+		if (ptr_ph[i].data != NULL)
+		{
+			printf("Freeing ptr_ph[%d].data\n", i);
+			free(ptr_ph[i].data);
+		}
+	i++;
+	}
+	printf("Freeing ptr_ph\n");
+	free(ptr_ph);
+}
+
 void	parsing(int argc, char **argv)
 {
 	int				i;
@@ -102,9 +125,12 @@ void	parsing(int argc, char **argv)
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
 	if (ptr_ph->data->nb_philo == 1)
+	{
 		special_case(ptr_ph, &ptr);
-	// jai tj un probleme de maniere random de temps en temps
-	// si jamais je ne return pas ici donc il va falloir verifier et return
+		free(ptr.forks);
+		free(ptr_ph);
+		return ;
+	}
 	philo_init(ptr_ph, &ptr);
 	// gerer ici le cas avec un seul philo
 	init_mutex(ptr_ph, &ptr);
@@ -113,7 +139,11 @@ void	parsing(int argc, char **argv)
 	usleep(2000);
 	while (i < ptr_ph->data->nb_philo)
 	{
-		pthread_join(ptr_ph->thread_id, NULL);
+		pthread_join(ptr_ph[i].thread_id, NULL);
 		i++;
 	}
+	free_philo(ptr_ph);
+	free(ptr.forks);
+	destroy_mutex(&ptr);
+	free_data(&ptr);
 }
