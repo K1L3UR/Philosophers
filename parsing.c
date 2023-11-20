@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:26:49 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/19 22:55:16 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/20 19:19:02 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	init(t_data *info, int ac, char **argv)
 	info->alive = 1;
 	info->forks = malloc(sizeof(pthread_mutex_t) * n_philo);
 	info->starting_time = get_time();
+	info->finish = 1;
 }
 
 void	create_thread(t_philo *ptr_ph)
@@ -85,6 +86,8 @@ void	create_thread(t_philo *ptr_ph)
 		ptr_ph[i].last_meal = 0;
 		i++;
 	}
+	if (ptr_ph->data->finish == 0)
+		return ;
 }
 
 void free_data(t_data *info)
@@ -101,12 +104,12 @@ void free_philo(t_philo *ptr_ph)
 	{
 		if (ptr_ph[i].data != NULL)
 		{
-			printf("Freeing ptr_ph[%d].data\n", i);
+			// printf("Freeing ptr_ph[%d].data\n", i);
 			free(ptr_ph[i].data);
 		}
 	i++;
 	}
-	printf("Freeing ptr_ph\n");
+	// printf("Freeing ptr_ph\n");
 	free(ptr_ph);
 }
 
@@ -142,8 +145,10 @@ void	parsing(int argc, char **argv)
 		pthread_join(ptr_ph[i].thread_id, NULL);
 		i++;
 	}
-	free_philo(ptr_ph);
-	free(ptr.forks);
+	// printf("%d\n", ptr_ph[ptr_ph->data->nb_philo].number_of_eat);
+	// if (ptr_ph->data->number_of_eat == ptr_ph->number_of_eat)
+	unlock_mutex(ptr_ph);
 	destroy_mutex(&ptr);
-	free_data(&ptr);
+	free(ptr.forks);
+	free(ptr_ph);
 }

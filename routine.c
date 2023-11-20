@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/19 22:14:20 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/20 19:31:21 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	init_mutex(t_philo *ptr_ph, t_data *info)
 	pthread_mutex_init(&info->status, NULL);
 	pthread_mutex_init(&info->meal, NULL);
 	pthread_mutex_init(&info->writing, NULL);
+	pthread_mutex_init(&info->meal_counter_mutex, NULL);
 	while (i < info->nb_philo)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);
@@ -49,6 +50,19 @@ void destroy_mutex_1(t_data *info)
 		pthread_mutex_destroy(&(info->forks[i]));
 		i++;
 	}
+}
+
+void	unlock_mutex(t_philo *ptr_ph)
+{
+	int	i;
+
+	i = 0;
+	// while (i < ptr_ph->data->nb_philo)
+	// {
+	// 	pthread_mutex_unlock(&(ptr_ph->data->forks[i]));
+	// 	i++;
+	// }
+	pthread_mutex_unlock(&ptr_ph->data->meal);
 }
 
 void destroy_mutex(t_data *info)
@@ -132,10 +146,15 @@ int	is_full(t_philo *ptr_ph)
 	i = 0;
 	if (ptr_ph->data->number_of_eat == ptr_ph->number_of_eat)
 	{
-		exit(0);
-		//return (0);
+		//ptr_ph->data->finish = 0;
+		//exit(0);
+		ptr_ph->data->alive = 0;
+		return (0); // cest trop chiant si jamais je sort pas avec un return
+		// // ca pete les couilles donc tant que hellgrind marche pas on stay komas
 	}
+	pthread_mutex_lock(&ptr_ph->data->meal_counter_mutex);
 	ptr_ph->number_of_eat++;
+	pthread_mutex_unlock(&ptr_ph->data->meal_counter_mutex);
 	i++;
 	return (1);
 }
@@ -151,5 +170,7 @@ void	*routine(void *arg)
 	{
 		eating(ptr_ph);
 	}
+	if (ptr_ph->data->finish == 0)
+			return (0);
 	return (NULL);
 }

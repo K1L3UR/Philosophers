@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/19 22:13:54 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/20 19:01:41 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_data
 	int				number_of_eat;
 	int				alive;
 	int				meal_counter;
+	int				finish;
 	uint64_t		starting_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	writing;
@@ -73,6 +74,7 @@ void		check_dead(t_philo *ptr_ph);
 int			special_case(t_philo *ptr_ph, t_data *info);
 void		destroy_mutex(t_data *info);
 void		destroy_mutex_1(t_data *info);
+void		unlock_mutex(t_philo *ptr_ph);
 
 
 #endif
