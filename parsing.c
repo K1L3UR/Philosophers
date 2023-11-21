@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <pthread.h>
+#include <errno.h>
 
 int	check_argv(int argc, char **argv)
 {
@@ -55,7 +56,7 @@ void	philo_init(t_philo *ptr_ph, t_data *info)
 	}
 }
 
-void	init(t_data *info, int ac, char **argv)
+int	init(t_data *info, int ac, char **argv)
 {
 	int	n_philo;
 
@@ -68,11 +69,21 @@ void	init(t_data *info, int ac, char **argv)
 		info->number_of_eat = ft_atoi(argv[5]);
 	else
 		info->number_of_eat = -1;
+	if (errno == ERANGE)
+	{
+		printf("Error ERANGE\n");
+		return (-1);
+	}
 	info->meal_counter = 0;
 	info->alive = 1;
+	if (n_philo > 200 || n_philo < 0)
+		return (-1);
+	if (info->time_to_eat < 60 || info->time_to_sleep < 60)
+		return (-1);
 	info->forks = malloc(sizeof(pthread_mutex_t) * n_philo);
 	info->starting_time = get_time();
 	info->finish = 1;
+	return (0);
 }
 
 void	create_thread(t_philo *ptr_ph)
@@ -83,11 +94,13 @@ void	create_thread(t_philo *ptr_ph)
 	while (i < ptr_ph->data->nb_philo)
 	{
 		pthread_create(&ptr_ph[i].thread_id, NULL, routine, (void *)&ptr_ph[i]);
+		pthread_mutex_lock(&ptr_ph->data->meal);		
 		ptr_ph[i].last_meal = 0;
+		pthread_mutex_unlock(&ptr_ph->data->meal);		
 		i++;
 	}
-	if (ptr_ph->data->finish == 0)
-		return ;
+	// if (ptr_ph->data->finish == 0)
+	// 	return ;
 }
 
 void free_data(t_data *info)
@@ -119,25 +132,34 @@ void	parsing(int argc, char **argv)
 	t_data			ptr;
 	t_philo			*ptr_ph;
 	pthread_t		rout;
+	int				ret;
 
 	i = 0;
 	if (check_argv(argc, argv) == 1)
-		ft_error(1);
-	init(&ptr, (argc - 1), argv);
+	{
+		printf("Error Arguments\n");
+		return ;
+	}
+	ret = init(&ptr, (argc - 1), argv);
+	if (ret == -1)
+		return ;
 	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * ptr.nb_philo);
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
-	if (ptr_ph->data->nb_philo == 1)
-	{
-		special_case(ptr_ph, &ptr);
-		free(ptr.forks);
-		free(ptr_ph);
-		return ;
-	}
+	// if (ptr_ph->data->nb_philo == 1)
+	// {
+	// 	special_case(ptr_ph, &ptr);
+	// 	free(ptr.forks);
+	// 	free(ptr_ph);
+	// 	return ;
+	// }
 	philo_init(ptr_ph, &ptr);
 	// gerer ici le cas avec un seul philo
 	init_mutex(ptr_ph, &ptr);
-	create_thread(ptr_ph);
+	if (ptr_ph->data->nb_philo == 1)
+		pthread_create(&ptr_ph[i].thread_id, NULL, routine_alone, (void *)&ptr_ph[i]);		
+	else
+		create_thread(ptr_ph);
 	check_dead(ptr_ph);
 	usleep(2000);
 	while (i < ptr_ph->data->nb_philo)
@@ -145,9 +167,7 @@ void	parsing(int argc, char **argv)
 		pthread_join(ptr_ph[i].thread_id, NULL);
 		i++;
 	}
-	// printf("%d\n", ptr_ph[ptr_ph->data->nb_philo].number_of_eat);
-	// if (ptr_ph->data->number_of_eat == ptr_ph->number_of_eat)
-	unlock_mutex(ptr_ph);
+	// unlock_mutex(ptr_ph);
 	destroy_mutex(&ptr);
 	free(ptr.forks);
 	free(ptr_ph);

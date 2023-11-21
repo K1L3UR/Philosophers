@@ -21,6 +21,7 @@
 # include "libft/libft.h"
 # include <sys/time.h>
 # include <stdint.h>
+# include <errno.h>
 
 # define FORKING 0
 # define EATING 1
@@ -60,7 +61,7 @@ typedef struct s_philo
 
 void		parsing(int argc, char **argv);
 int			check_argv(int argc, char **argv);
-void		init(t_data *info, int ac, char **argv);
+int			init(t_data *info, int ac, char **argv);
 void		*routine(void *arg);
 int			ft_error(int er);
 uint64_t	get_time(void);
@@ -75,6 +76,8 @@ int			special_case(t_philo *ptr_ph, t_data *info);
 void		destroy_mutex(t_data *info);
 void		destroy_mutex_1(t_data *info);
 void		unlock_mutex(t_philo *ptr_ph);
+int			is_full(t_philo *ptr_ph);
+void		*routine_alone(void *arg);
 
 
 #endif

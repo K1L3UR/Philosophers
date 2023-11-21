@@ -112,7 +112,10 @@ void	eating(t_philo *ptr_ph)
 		pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	write_status(ptr_ph, FORKING);
 	write_status(ptr_ph, EATING);
+	is_full(ptr_ph);
+	pthread_mutex_lock(&ptr_ph->data->meal);	
 	ptr_ph->last_meal = find_time(ptr_ph);
+	pthread_mutex_unlock(&ptr_ph->data->meal);	
 	ft_usleep(ptr_ph, ptr_ph->data->time_to_eat);
 	if (ptr_ph->id % 2)
 		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
@@ -146,11 +149,10 @@ int	is_full(t_philo *ptr_ph)
 	i = 0;
 	if (ptr_ph->data->number_of_eat == ptr_ph->number_of_eat)
 	{
-		//ptr_ph->data->finish = 0;
-		//exit(0);
+		pthread_mutex_lock(&ptr_ph->data->status);		
 		ptr_ph->data->alive = 0;
-		return (0); // cest trop chiant si jamais je sort pas avec un return
-		// // ca pete les couilles donc tant que hellgrind marche pas on stay komas
+		pthread_mutex_unlock(&ptr_ph->data->status);
+		return (0);
 	}
 	pthread_mutex_lock(&ptr_ph->data->meal_counter_mutex);
 	ptr_ph->number_of_eat++;
@@ -166,11 +168,23 @@ void	*routine(void *arg)
 	ptr_ph = (t_philo *)arg;
 	if (ptr_ph->id % 2)
 		usleep(2000);
-	while ((check_alive(ptr_ph)) == 1 && (is_full(ptr_ph)) == 1)
+	while ((check_alive(ptr_ph)) == 1)
 	{
 		eating(ptr_ph);
 	}
-	if (ptr_ph->data->finish == 0)
-			return (0);
+	return (NULL);
+}
+
+void	*routine_alone(void *arg)
+{
+	t_philo	*ptr_ph;
+
+	ptr_ph = (t_philo *)arg;
+	
+	pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->l_fork]);
+	write_status(ptr_ph, FORKING);
+	usleep(ptr_ph->data->time_to_die * 1000);
+	// printf("%lu %d is dead\n", find_time(ptr_ph), (ptr_ph->id));
+	pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	return (NULL);
 }

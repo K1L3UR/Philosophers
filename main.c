@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/19 19:51:18 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:08:12 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	check_dead(t_philo *ptr_ph)
 			pthread_mutex_lock(&ptr_ph->data->writing);
 			printf("%lu %d is dead\n", find_time(ptr_ph), ptr_ph[i].id);
 			pthread_mutex_unlock(&ptr_ph->data->writing);
+			pthread_mutex_unlock(&ptr_ph->data->meal);			
 			break ;
 		}
 		pthread_mutex_unlock(&ptr_ph->data->meal);
@@ -49,7 +50,6 @@ int	special_case(t_philo *ptr_ph, t_data *info)
 	ptr_ph->number_of_eat = 0;
 	ptr_ph->r_fork = 0;
 	printf("%lu %d has taken a fork\n", find_time(ptr_ph), (ptr_ph->id));
-	// ft_usleep(ptr_ph, ptr_ph->data->time_to_die);
 	usleep(ptr_ph->data->time_to_die * 1000);
 	printf("%lu %d is dead\n", find_time(ptr_ph), (ptr_ph->id));
 	return (0);
