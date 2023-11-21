@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/09 19:08:12 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:38:55 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	check_dead(t_philo *ptr_ph)
 			pthread_mutex_lock(&ptr_ph->data->writing);
 			printf("%lu %d is dead\n", find_time(ptr_ph), ptr_ph[i].id);
 			pthread_mutex_unlock(&ptr_ph->data->writing);
-			pthread_mutex_unlock(&ptr_ph->data->meal);			
+			pthread_mutex_unlock(&ptr_ph->data->meal);
 			break ;
 		}
 		pthread_mutex_unlock(&ptr_ph->data->meal);

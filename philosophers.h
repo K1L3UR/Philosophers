@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/20 19:01:41 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:59:11 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_data
 typedef struct s_philo
 {
 	t_data			*data;
-	int				number_of_eat; // variable pour gere le nombre de repas a effectuer, je dois m'en occuper
+	int				number_of_eat;
 	int				last_meal;
 	int				id;
 	int				r_fork;
@@ -63,7 +63,6 @@ void		parsing(int argc, char **argv);
 int			check_argv(int argc, char **argv);
 int			init(t_data *info, int ac, char **argv);
 void		*routine(void *arg);
-int			ft_error(int er);
 uint64_t	get_time(void);
 void		create_thread(t_philo *ptr_ph);
 void		init_mutex(t_philo *ptr_ph, t_data *info);
@@ -74,10 +73,8 @@ void		write_status(t_philo *ptr_ph, int status);
 void		check_dead(t_philo *ptr_ph);
 int			special_case(t_philo *ptr_ph, t_data *info);
 void		destroy_mutex(t_data *info);
-void		destroy_mutex_1(t_data *info);
 void		unlock_mutex(t_philo *ptr_ph);
 int			is_full(t_philo *ptr_ph);
 void		*routine_alone(void *arg);
-
 
 #endif

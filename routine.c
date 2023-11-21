@@ -6,22 +6,13 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/20 19:31:21 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:57:40 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <pthread.h>
 #include <stdio.h>
-
-int	ft_error(int er)
-{
-	if (er == 1)
-	{
-		printf("Error Args\n");
-	}
-	return (0);
-}
 
 void	init_mutex(t_philo *ptr_ph, t_data *info)
 {
@@ -40,31 +31,6 @@ void	init_mutex(t_philo *ptr_ph, t_data *info)
 	return ;
 }
 
-void destroy_mutex_1(t_data *info)
-{
-	int i;
-
-	i = 0;
-	while (i < info->nb_philo)
-	{
-		pthread_mutex_destroy(&(info->forks[i]));
-		i++;
-	}
-}
-
-void	unlock_mutex(t_philo *ptr_ph)
-{
-	int	i;
-
-	i = 0;
-	// while (i < ptr_ph->data->nb_philo)
-	// {
-	// 	pthread_mutex_unlock(&(ptr_ph->data->forks[i]));
-	// 	i++;
-	// }
-	pthread_mutex_unlock(&ptr_ph->data->meal);
-}
-
 void destroy_mutex(t_data *info)
 {
 	int i;
@@ -80,7 +46,6 @@ void destroy_mutex(t_data *info)
 	pthread_mutex_destroy(&(info->meal));
 	pthread_mutex_destroy(&(info->meal_counter_mutex));
 }
-
 
 void	write_status(t_philo *ptr_ph, int status)
 {
@@ -113,9 +78,9 @@ void	eating(t_philo *ptr_ph)
 	write_status(ptr_ph, FORKING);
 	write_status(ptr_ph, EATING);
 	is_full(ptr_ph);
-	pthread_mutex_lock(&ptr_ph->data->meal);	
+	pthread_mutex_lock(&ptr_ph->data->meal);
 	ptr_ph->last_meal = find_time(ptr_ph);
-	pthread_mutex_unlock(&ptr_ph->data->meal);	
+	pthread_mutex_unlock(&ptr_ph->data->meal);
 	ft_usleep(ptr_ph, ptr_ph->data->time_to_eat);
 	if (ptr_ph->id % 2)
 		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
@@ -128,7 +93,6 @@ void	eating(t_philo *ptr_ph)
 	write_status(ptr_ph, SLEEPING);
 	ft_usleep(ptr_ph, ptr_ph->data->time_to_sleep);
 	write_status(ptr_ph, THINKING);
-	usleep(1000); // obligatoire que si le pc est lent normalement
 }
 
 int	check_alive(t_philo *ptr_ph)
@@ -171,6 +135,7 @@ void	*routine(void *arg)
 	while ((check_alive(ptr_ph)) == 1)
 	{
 		eating(ptr_ph);
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -180,11 +145,9 @@ void	*routine_alone(void *arg)
 	t_philo	*ptr_ph;
 
 	ptr_ph = (t_philo *)arg;
-	
 	pthread_mutex_lock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	write_status(ptr_ph, FORKING);
 	usleep(ptr_ph->data->time_to_die * 1000);
-	// printf("%lu %d is dead\n", find_time(ptr_ph), (ptr_ph->id));
 	pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
 	return (NULL);
 }

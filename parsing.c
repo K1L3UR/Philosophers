@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:26:49 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/20 19:19:02 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:50:14 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,35 +94,31 @@ void	create_thread(t_philo *ptr_ph)
 	while (i < ptr_ph->data->nb_philo)
 	{
 		pthread_create(&ptr_ph[i].thread_id, NULL, routine, (void *)&ptr_ph[i]);
-		pthread_mutex_lock(&ptr_ph->data->meal);		
+		pthread_mutex_lock(&ptr_ph->data->meal);
 		ptr_ph[i].last_meal = 0;
-		pthread_mutex_unlock(&ptr_ph->data->meal);		
+		pthread_mutex_unlock(&ptr_ph->data->meal);
 		i++;
 	}
-	// if (ptr_ph->data->finish == 0)
-	// 	return ;
 }
 
-void free_data(t_data *info)
+void	free_data(t_data *info)
 {
 	free(info);
 }
 
-void free_philo(t_philo *ptr_ph)
+void	free_philo(t_philo *ptr_ph)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < ptr_ph->data->nb_philo)
 	{
 		if (ptr_ph[i].data != NULL)
 		{
-			// printf("Freeing ptr_ph[%d].data\n", i);
 			free(ptr_ph[i].data);
 		}
 	i++;
 	}
-	// printf("Freeing ptr_ph\n");
 	free(ptr_ph);
 }
 
@@ -146,18 +142,10 @@ void	parsing(int argc, char **argv)
 	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * ptr.nb_philo);
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
-	// if (ptr_ph->data->nb_philo == 1)
-	// {
-	// 	special_case(ptr_ph, &ptr);
-	// 	free(ptr.forks);
-	// 	free(ptr_ph);
-	// 	return ;
-	// }
 	philo_init(ptr_ph, &ptr);
-	// gerer ici le cas avec un seul philo
 	init_mutex(ptr_ph, &ptr);
 	if (ptr_ph->data->nb_philo == 1)
-		pthread_create(&ptr_ph[i].thread_id, NULL, routine_alone, (void *)&ptr_ph[i]);		
+		pthread_create(&ptr_ph[i].thread_id, NULL, routine_alone, (void *)&ptr_ph[i]);
 	else
 		create_thread(ptr_ph);
 	check_dead(ptr_ph);
@@ -167,7 +155,6 @@ void	parsing(int argc, char **argv)
 		pthread_join(ptr_ph[i].thread_id, NULL);
 		i++;
 	}
-	// unlock_mutex(ptr_ph);
 	destroy_mutex(&ptr);
 	free(ptr.forks);
 	free(ptr_ph);
