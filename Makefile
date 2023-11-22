@@ -2,7 +2,7 @@ NAME = philo
 CFLAGS := -MMD -MP -g -pthread #-fsanitize=thread -Wall -Wextra -Werror -MMD -MP -g
 LDFLAGS := -L libft -lft
 CC = clang
-SRC = main.c parsing.c routine.c time.c
+SRC = main.c parsing.c routine.c time.c mutex.c init.c
 DEP = $(SRC:.c=.d)
 OBJ = $(SRC:.c=.o)
 

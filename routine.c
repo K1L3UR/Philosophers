@@ -6,46 +6,13 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:18:42 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/21 19:57:40 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:11:13 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <pthread.h>
 #include <stdio.h>
-
-void	init_mutex(t_philo *ptr_ph, t_data *info)
-{
-	int	i;
-
-	i = 0;
-	pthread_mutex_init(&info->status, NULL);
-	pthread_mutex_init(&info->meal, NULL);
-	pthread_mutex_init(&info->writing, NULL);
-	pthread_mutex_init(&info->meal_counter_mutex, NULL);
-	while (i < info->nb_philo)
-	{
-		pthread_mutex_init(&info->forks[i], NULL);
-		i++;
-	}
-	return ;
-}
-
-void destroy_mutex(t_data *info)
-{
-	int i;
-
-	i = 0;
-	while (i < info->nb_philo)
-	{
-		pthread_mutex_destroy(&(info->forks[i]));
-		i++;
-	}
-	pthread_mutex_destroy(&(info->writing));
-	pthread_mutex_destroy(&(info->status));
-	pthread_mutex_destroy(&(info->meal));
-	pthread_mutex_destroy(&(info->meal_counter_mutex));
-}
 
 void	write_status(t_philo *ptr_ph, int status)
 {
@@ -78,9 +45,7 @@ void	eating(t_philo *ptr_ph)
 	write_status(ptr_ph, FORKING);
 	write_status(ptr_ph, EATING);
 	is_full(ptr_ph);
-	pthread_mutex_lock(&ptr_ph->data->meal);
-	ptr_ph->last_meal = find_time(ptr_ph);
-	pthread_mutex_unlock(&ptr_ph->data->meal);
+	lock_meal_unlock_meal(ptr_ph);
 	ft_usleep(ptr_ph, ptr_ph->data->time_to_eat);
 	if (ptr_ph->id % 2)
 		pthread_mutex_unlock(&ptr_ph->data->forks[ptr_ph->l_fork]);
@@ -95,17 +60,6 @@ void	eating(t_philo *ptr_ph)
 	write_status(ptr_ph, THINKING);
 }
 
-int	check_alive(t_philo *ptr_ph)
-{
-	int	tmp;
-
-	tmp = 0;
-	pthread_mutex_lock(&ptr_ph->data->status);
-	tmp = ptr_ph->data->alive;
-	pthread_mutex_unlock(&ptr_ph->data->status);
-	return (tmp);
-}
-
 int	is_full(t_philo *ptr_ph)
 {
 	int	i;
@@ -113,7 +67,7 @@ int	is_full(t_philo *ptr_ph)
 	i = 0;
 	if (ptr_ph->data->number_of_eat == ptr_ph->number_of_eat)
 	{
-		pthread_mutex_lock(&ptr_ph->data->status);		
+		pthread_mutex_lock(&ptr_ph->data->status);
 		ptr_ph->data->alive = 0;
 		pthread_mutex_unlock(&ptr_ph->data->status);
 		return (0);
@@ -135,7 +89,6 @@ void	*routine(void *arg)
 	while ((check_alive(ptr_ph)) == 1)
 	{
 		eating(ptr_ph);
-		usleep(1000);
 	}
 	return (NULL);
 }

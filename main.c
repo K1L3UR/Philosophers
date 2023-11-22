@@ -6,12 +6,22 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/21 19:38:55 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:34:53 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <pthread.h>
+
+static int	philo_loop(t_philo *ptr_ph, int i)
+{
+	if (i == ptr_ph->data->nb_philo)
+	{
+		usleep(500);
+		i = 0;
+	}
+	return (i);
+}
 
 void	check_dead(t_philo *ptr_ph)
 {
@@ -35,24 +45,8 @@ void	check_dead(t_philo *ptr_ph)
 		}
 		pthread_mutex_unlock(&ptr_ph->data->meal);
 		i++;
-		if (i == ptr_ph->data->nb_philo)
-		{
-			usleep(2000);
-			i = 0;
-		}
+		i = philo_loop(ptr_ph, i);
 	}
-}
-
-int	special_case(t_philo *ptr_ph, t_data *info)
-{
-	ptr_ph->data = info;
-	ptr_ph->id = 1;
-	ptr_ph->number_of_eat = 0;
-	ptr_ph->r_fork = 0;
-	printf("%lu %d has taken a fork\n", find_time(ptr_ph), (ptr_ph->id));
-	usleep(ptr_ph->data->time_to_die * 1000);
-	printf("%lu %d is dead\n", find_time(ptr_ph), (ptr_ph->id));
-	return (0);
 }
 
 int	main(int argc, char **argv)

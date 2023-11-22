@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/21 19:59:11 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:34:33 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_data
 	int				number_of_eat;
 	int				alive;
 	int				meal_counter;
-	int				finish;
 	uint64_t		starting_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	writing;
@@ -62,6 +61,7 @@ typedef struct s_philo
 void		parsing(int argc, char **argv);
 int			check_argv(int argc, char **argv);
 int			init(t_data *info, int ac, char **argv);
+void		philo_init(t_philo *ptr_ph, t_data *info);
 void		*routine(void *arg);
 uint64_t	get_time(void);
 void		create_thread(t_philo *ptr_ph);
@@ -72,9 +72,11 @@ int			check_alive(t_philo *ptr_ph);
 void		write_status(t_philo *ptr_ph, int status);
 void		check_dead(t_philo *ptr_ph);
 int			special_case(t_philo *ptr_ph, t_data *info);
-void		destroy_mutex(t_data *info);
+void		destroy_mutex(t_data *info, t_philo *ptr_ph);
 void		unlock_mutex(t_philo *ptr_ph);
 int			is_full(t_philo *ptr_ph);
 void		*routine_alone(void *arg);
+void		lock_meal_unlock_meal(t_philo *ptr_ph);
+int			check_alive(t_philo *ptr_ph);
 
 #endif
