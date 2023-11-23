@@ -6,14 +6,14 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:56:26 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/22 16:59:39 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:46:05 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <pthread.h>
 
-void	init_mutex(t_philo *ptr_ph, t_data *info)
+void	init_mutex(t_data *info)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:26:49 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/22 18:26:09 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:43:06 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,18 @@ void	parsing(int argc, char **argv)
 	int				i;
 	t_data			ptr;
 	t_philo			*ptr_ph;
-	pthread_t		rout;
 
 	i = 0;
 	if (check_argv(argc, argv) == 1)
 		return ((void)(printf("Error Arguments\n")));
 	if (init(&ptr, (argc - 1), argv) == -1)
-		return ;
+		return ((void)(printf("Error Arguments\n")));
 	ptr_ph = (t_philo *)malloc(sizeof(t_philo) * ptr.nb_philo);
 	if (ptr_ph == NULL)
 		return ;
 	ptr_ph->data = &ptr;
 	ptr.starting_time = get_time();
-	philo_init(ptr_ph, &ptr);
-	init_mutex(ptr_ph, &ptr);
+	do_init_philo_then_mutex(ptr_ph, &ptr);
 	if (ptr_ph->data->nb_philo == 1)
 		pthread_create(&ptr_ph[i].thread_id, NULL, routine_alone,
 			(void *)&ptr_ph[i]);

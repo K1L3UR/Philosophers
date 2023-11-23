@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:25:49 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/17 19:48:29 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:44:41 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 uint64_t	get_time(void)
 {
-	uint64_t		curr_time;
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) != 0)
@@ -40,7 +39,7 @@ void	ft_usleep(t_philo *ptr_ph, long time)
 	while (check_alive(ptr_ph) == 1)
 	{
 		now = get_time();
-		if (now - start >= time)
+		if (now - start >= (unsigned long)time)
 			break ;
 		usleep(200);
 	}

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/22 17:34:33 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:46:14 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 typedef struct s_data
 {
 	int				nb_philo;
-	int				time_to_die;
+	uint64_t		time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_eat;
@@ -65,7 +65,7 @@ void		philo_init(t_philo *ptr_ph, t_data *info);
 void		*routine(void *arg);
 uint64_t	get_time(void);
 void		create_thread(t_philo *ptr_ph);
-void		init_mutex(t_philo *ptr_ph, t_data *info);
+void		init_mutex(t_data *info);
 uint64_t	find_time(t_philo *ptr_ph);
 void		ft_usleep(t_philo *ptr_ph, long time);
 int			check_alive(t_philo *ptr_ph);
@@ -78,5 +78,6 @@ int			is_full(t_philo *ptr_ph);
 void		*routine_alone(void *arg);
 void		lock_meal_unlock_meal(t_philo *ptr_ph);
 int			check_alive(t_philo *ptr_ph);
+void		do_init_philo_then_mutex(t_philo *ptr_ph, t_data *info);
 
 #endif

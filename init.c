@@ -6,12 +6,18 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 17:01:34 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/22 18:26:45 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:46:24 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 #include <stdlib.h>
+
+void	do_init_philo_then_mutex(t_philo *ptr_ph, t_data *info)
+{
+	philo_init(ptr_ph, info);
+	init_mutex(info);
+}
 
 void	philo_init(t_philo *ptr_ph, t_data *info)
 {
@@ -52,9 +58,8 @@ int	init(t_data *info, int ac, char **argv)
 		return (printf("Error ERANGE\n"), -1);
 	info->meal_counter = 0;
 	info->alive = 1;
-	if (n_philo > 200 || n_philo < 0 || (ac == 5 && ft_atoi(argv[5]) <= 0))
-		return (-1);
-	if (info->time_to_eat < 60 || info->time_to_sleep < 60)
+	if (n_philo > 200 || n_philo < 0 || info->time_to_eat < 60
+		|| info->time_to_sleep < 60 || (ac == 5 && ft_atoi(argv[5]) <= 0))
 		return (-1);
 	info->forks = malloc(sizeof(pthread_mutex_t) * n_philo);
 	if (info->forks == NULL)

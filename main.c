@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:16:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/22 17:34:53 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/23 14:41:12 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ void	check_dead(t_philo *ptr_ph)
 
 int	main(int argc, char **argv)
 {
-	int		i;
-
-	i = 0;
 	if (argc <= 4 || argc > 6)
 		return (0);
 	parsing(argc, argv);
