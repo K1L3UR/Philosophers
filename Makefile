@@ -1,6 +1,5 @@
 NAME = philo
-CFLAGS := -MMD -MP -g -pthread -Wall -Wextra -Werror -MMD -MP -g #-fsanitize=thread
-LDFLAGS := -L libft -lft
+CFLAGS := -MMD -MP -g -pthread -fsanitize=thread -Wall -Wextra -Werror -MMD -MP -g #-fsanitize=thread
 CC = clang
 SRC = main.c parsing.c routine.c time.c mutex.c init.c
 DEP = $(SRC:.c=.d)
@@ -9,7 +8,6 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		make -C libft
 		$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 %.o: %.c

@@ -6,7 +6,7 @@
 /*   By: arnduran <arnduran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 18:13:14 by arnduran          #+#    #+#             */
-/*   Updated: 2023/11/23 14:46:14 by arnduran         ###   ########.fr       */
+/*   Updated: 2023/11/23 22:46:56 by arnduran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <pthread.h>
 # include <string.h>
 # include <stdlib.h>
-# include "libft/libft.h"
 # include <sys/time.h>
 # include <stdint.h>
 # include <errno.h>
@@ -79,5 +78,7 @@ void		*routine_alone(void *arg);
 void		lock_meal_unlock_meal(t_philo *ptr_ph);
 int			check_alive(t_philo *ptr_ph);
 void		do_init_philo_then_mutex(t_philo *ptr_ph, t_data *info);
+int			ft_isdigit(int c);
+int			ft_atoi(const char *str);
 
 #endif
